@@ -17,14 +17,17 @@ $id_periodo = isset($_POST['periodo']) ? intval($_POST['periodo']) : 0;
 // Consultas adicionales para obtener los nombres de grupo, materia y periodo
 $consulta_grupo = "SELECT nombre_grupo FROM grupos WHERE id_grupo = $id_grupo";
 $consulta_materia = "SELECT nombre FROM materias WHERE id_materia = $id_materia";
+$consulta_credito = "SELECT creditos FROM materias WHERE id_materia = $id_materia";
 $consulta_periodo = "SELECT periodo FROM periodos WHERE id_periodo = $id_periodo";
 
 $resultado_grupo = mysqli_query($conexion, $consulta_grupo);
 $resultado_materia = mysqli_query($conexion, $consulta_materia);
+$resultado_credito = mysqli_query($conexion, $consulta_credito);
 $resultado_periodo = mysqli_query($conexion, $consulta_periodo);
 
 $nombre_grupo = mysqli_fetch_assoc($resultado_grupo)['nombre_grupo'];
 $nombre_materia = mysqli_fetch_assoc($resultado_materia)['nombre'];
+$creditos_materia = mysqli_fetch_assoc($resultado_credito)['creditos'];
 $nombre_periodo = mysqli_fetch_assoc($resultado_periodo)['periodo'];
 
 // Inicializar variables de totales y créditos por parcial
@@ -511,6 +514,7 @@ if ($total_alumnos > 0) {
 
     <h2><strong>Grupo:</strong> <?php echo htmlspecialchars($nombre_grupo); ?></h2>
     <h2><strong>Materia:</strong> <?php echo htmlspecialchars($nombre_materia); ?></h2>
+    <h2><strong>Creditos:</strong> <?php echo htmlspecialchars($creditos_materia); ?></h2>
     <h2><strong>Periodo:</strong> <?php echo htmlspecialchars($nombre_periodo); ?></h2>
 <?php
 if ($resultado_alumnos && mysqli_num_rows($resultado_alumnos) > 0) {
