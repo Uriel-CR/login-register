@@ -68,20 +68,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $segunda_oportunidad = isset($calificaciones['segunda_oportunidad']) ? $calificaciones['segunda_oportunidad'] : '';
 
             // Convertir a número o marcar como 'N/A' si es necesario
-            $parcial_1_num = ($parcial_1 === 'N/A') ? 'N/A' : floatval($parcial_1);
-            $parcial_2_num = ($parcial_2 === 'N/A') ? 'N/A' : floatval($parcial_2);
-            $parcial_3_num = ($parcial_3 === 'N/A') ? 'N/A' : floatval($parcial_3);
-            $segunda_oportunidad_num = ($segunda_oportunidad === 'N/A') ? 'N/A' : floatval($segunda_oportunidad);
+            $parcial_1_num = ($parcial_1 === 'N/A' || $parcial_1 < 70) ? 'N/A' : floatval($parcial_1);
+            $parcial_2_num = ($parcial_2 === 'N/A' || $parcial_2 < 70) ? 'N/A' : floatval($parcial_2);
+            $parcial_3_num = ($parcial_3 === 'N/A' || $parcial_3 < 70) ? 'N/A' : floatval($parcial_3);
+            $segunda_oportunidad_num = ($segunda_oportunidad === 'N/A' || $segunda_oportunidad < 70) ? 'N/A' : floatval($segunda_oportunidad);
 
             // Calcular promedio solo si todas las calificaciones parciales son numéricas
             if ($parcial_1_num === 'N/A' || $parcial_2_num === 'N/A' || $parcial_3_num === 'N/A') {
                 $promedio = 'N/A';
             } else {
                 $promedio = ($parcial_1_num + $parcial_2_num + $parcial_3_num) / 3;
+                if ($promedio < 70) {
+                    $promedio = 'N/A';
+                }
             }
 
             // Determinar calificación final
-            if ($segunda_oportunidad_num >= 70 && $segunda_oportunidad_num !== 'N/A') {
+            if ($segunda_oportunidad_num !== 'N/A' && $segunda_oportunidad_num >= 70) {
                 $calif_final = $segunda_oportunidad_num;
             } elseif ($promedio === 'N/A') {
                 $calif_final = 'N/A';
@@ -534,6 +537,7 @@ if ($resultado_alumnos && mysqli_num_rows($resultado_alumnos) > 0) {
             $contador_reprobados++;
         }
 
+        $disable_segunda_oportunidad = ($alumno['parcial_1'] !== 'N/A' && $alumno['parcial_2'] !== 'N/A' && $alumno['parcial_3'] !== 'N/A') ? 'disabled' : '';
         echo '<tr>';
         echo '<td>'.$contador.'</td>';
         echo '<td>'.$alumno['matricula'].'</td>';
@@ -544,7 +548,7 @@ if ($resultado_alumnos && mysqli_num_rows($resultado_alumnos) > 0) {
         echo '<td class="editable"><input type="text" name="alumnos['.$alumno['id_alumno'].'][parcial_2]" value="'.(isset($alumno['parcial_2']) ? $alumno['parcial_2'] : '').'" style="text-transform: uppercase;" oninput="replaceNA(this)"></td>';
         echo '<td class="editable"><input type="text" name="alumnos['.$alumno['id_alumno'].'][parcial_3]" value="'.(isset($alumno['parcial_3']) ? $alumno['parcial_3'] : '').'" style="text-transform: uppercase;" oninput="replaceNA(this)"></td>';
         echo '<td><input type="text" class="transparent-input" name="alumnos['.$alumno['id_alumno'].'][promedio]" value="'.(isset($alumno['promedio']) ? $alumno['promedio'] : '').'" readonly style="text-transform: uppercase;" oninput="replaceNA(this)"></td>';
-        echo '<td class="editable"><input type="text" name="alumnos['.$alumno['id_alumno'].'][segunda_oportunidad]" value="'.(isset($alumno['segunda_oportunidad']) ? $alumno['segunda_oportunidad'] : '').'" style="text-transform: uppercase;" oninput="replaceNA(this)"></td>';
+        echo '<td class="editable"><input type="text" name="alumnos['.$alumno['id_alumno'].'][segunda_oportunidad]" value="'.(isset($alumno['segunda_oportunidad']) ? $alumno['segunda_oportunidad'] : '').'" style="text-transform: uppercase;" oninput="replaceNA(this)" '.$disable_segunda_oportunidad.'></td>';
         echo '<td><input type="text" class="transparent-input" name="alumnos['.$alumno['id_alumno'].'][calif_final]" value="'.(isset($alumno['calif_final']) ? $alumno['calif_final'] : '').'" readonly style="text-transform: uppercase;" oninput="replaceNA(this)"></td>';
         echo '</tr>';
         $contador++;
@@ -694,11 +698,18 @@ mysqli_close($conexion);
         });
     });
 
-    function replaceNA(element) {
-            if (element.value.toUpperCase() === 'NA') {
-                element.value = 'N/A';
+    function replaceNAOnSubmit() {
+        const inputs = document.querySelectorAll('.editable input[type="text"]');
+        inputs.forEach(input => {
+            if (input.value.toUpperCase() === 'NA' || (input.value !== '' && input.value < 70)) {
+                input.value = 'N/A';
             }
-        }
+        });
+    }
+
+    document.querySelector('form').addEventListener('submit', function(event) {
+        replaceNAOnSubmit();
+    });
 </script>
 
 </body>
