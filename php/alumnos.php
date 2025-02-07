@@ -78,7 +78,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && !isset($_POST['buscar']) && !isset($
     $ap_paterno = $_POST['ap_paterno'];
     $ap_materno = $_POST['ap_materno'];
     $nombre = $_POST['nombre'];
-    
+
     // Obtener los IDs del grupo y periodo
     $id_grupo = isset($_POST['grupo']) && $_POST['grupo'] != '0' ? $_POST['grupo'] : null;
     $id_periodo = isset($_POST['periodo']) && $_POST['periodo'] != '0' ? $_POST['periodo'] : null;
@@ -133,6 +133,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && !isset($_POST['buscar']) && !isset($
 
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -147,23 +148,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && !isset($_POST['buscar']) && !isset($
             padding: 0;
         }
 
-            .header {
-     background-color: #007BFF;
-    color: #fff;
-    padding: 10px 20px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    position: fixed; /* Hace que el encabezado se quede fijo en la parte superior */
-    top: 0; /* Asegura que el encabezado esté en la parte superior de la página */
-    width: 100%; /* Asegura que el encabezado ocupe todo el ancho de la ventana */
-    z-index: 1000; /* Asegura que el encabezado esté sobre otros elementos */
-}
+        .header {
+            background-color: #007BFF;
+            color: #fff;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            /* Hace que el encabezado se quede fijo en la parte superior */
+            top: 0;
+            /* Asegura que el encabezado esté en la parte superior de la página */
+            width: 100%;
+            /* Asegura que el encabezado ocupe todo el ancho de la ventana */
+            z-index: 1000;
+            /* Asegura que el encabezado esté sobre otros elementos */
+        }
 
 
         .logo {
-            
+
             font-size: 24px;
             font-weight: bold;
             position: fixed;
@@ -199,12 +204,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && !isset($_POST['buscar']) && !isset($
             transition: background-color 0.3s ease;
         }
 
-        .nav-menu-link.selected, .nav-menu-link:hover {
-            background-color: #00509e; /* Azul más oscuro */
+        .nav-menu-link.selected,
+        .nav-menu-link:hover {
+            background-color: #00509e;
+            /* Azul más oscuro */
         }
 
         .nav-toggle {
-            display: none; /* Mostrar solo en dispositivos móviles */
+            display: none;
+            /* Mostrar solo en dispositivos móviles */
             background: none;
             border: none;
             cursor: pointer;
@@ -218,16 +226,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && !isset($_POST['buscar']) && !isset($
         .container {
             background: #fff;
             border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             padding: 20px;
             width: 80%;
             max-width: 600px;
-            margin: 100px auto; /* Añadido margen superior para no solapar con el encabezado fijo */
+            margin: 100px auto;
+            /* Añadido margen superior para no solapar con el encabezado fijo */
         }
 
         h2 {
             text-align: center;
-            color: #007bff; /* Azul */
+            color: #007bff;
+            /* Azul */
         }
 
         label {
@@ -246,7 +256,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && !isset($_POST['buscar']) && !isset($
         }
 
         input[type="submit"] {
-            background-color: #007bff; /* Azul */
+            background-color: #007bff;
+            /* Azul */
             color: #fff;
             border: none;
             padding: 10px 15px;
@@ -257,7 +268,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && !isset($_POST['buscar']) && !isset($
         }
 
         input[type="submit"]:hover {
-            background-color: #0056b3; /* Azul más oscuro */
+            background-color: #0056b3;
+            /* Azul más oscuro */
         }
 
         .form-group {
@@ -275,7 +287,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && !isset($_POST['buscar']) && !isset($
         .btn-alumnos-irregulares {
             display: block;
             width: 100%;
-            background-color: #ff5733; /* Color para el botón */
+            background-color: #ff5733;
+            /* Color para el botón */
             color: #fff;
             border: none;
             padding: 10px 1px;
@@ -288,11 +301,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && !isset($_POST['buscar']) && !isset($
         }
 
         .btn-alumnos-irregulares:hover {
-            background-color: #c70039; /* Color más oscuro para el botón */
+            background-color: #c70039;
+            /* Color más oscuro para el botón */
         }
 
-        .btn-buscar, .btn-borrar {
-            background-color: #28a745; /* Verde para el botón */
+        .btn-buscar,
+        .btn-borrar {
+            background-color: #28a745;
+            /* Verde para el botón */
             color: #fff;
             border: none;
             padding: 10px 15px;
@@ -303,15 +319,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && !isset($_POST['buscar']) && !isset($
             transition: background-color 0.3s ease;
         }
 
-        .btn-buscar:hover, .btn-borrar:hover {
-            background-color: #218838; /* Verde más oscuro para el botón */
+        .btn-buscar:hover,
+        .btn-borrar:hover {
+            background-color: #218838;
+            /* Verde más oscuro para el botón */
         }
     </style>
 </head>
+
 <body>
     <header class="header">
         <nav class="nav">
-            <a class="logo nav-link">TESI-SADRISC 2024</a>
+            <a class="logo nav-link">TESI</a>
             <ul class="nav-menu">
                 <li class="nav-menu-item"><a class="nav-menu-link" href="../php/bienvenida.php">Inicio</a></li>
                 <li class="nav-menu-item"><a class="nav-menu-link selected" href="../php/alumnos">Alumnos</a></li>
@@ -327,100 +346,101 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && !isset($_POST['buscar']) && !isset($
                 <img src="../assets/images/menu.svg" class="nav-toggle-icon" alt="">
             </button>
         </nav>
-        </header>
+    </header>
 
-<div class="container">
-    <h2>Registrar Alumno</h2>
-    <form method="post" action="" onsubmit="return validarFormulario()">
-        <div class="form-group">
-            <label for="matricula">Matrícula:</label>
-            <input type="text" id="matricula" name="matricula" required style="text-transform: uppercase;">
-        </div>
-        
-        <div class="form-group">
-            <label for="ap_paterno">Apellido Paterno:</label>
-            <input type="text" id="ap_paterno" name="ap_paterno" required style="text-transform: uppercase;">
-        </div>
-        
-        <div class="form-group">
-            <label for="ap_materno">Apellido Materno:</label>
-            <input type="text" id="ap_materno" name="ap_materno" required style="text-transform: uppercase;">
-        </div>
-        
-        <div class="form-group">
-            <label for="nombre">Nombre:</label>
-            <input type="text" id="nombre" name="nombre" required style="text-transform: uppercase;">
-        </div>
-        
-        <div class="form-group">
-            <label for="grupo">Grupo:</label>
-            <select id="grupo" name="grupo" onchange="mostrarMaterias()">
-                <option value="0">Selecciona un grupo</option>
-                <?php foreach ($grupos as $grupo): ?>
-                    <option value="<?php echo htmlspecialchars($grupo['id_grupo']); ?>">
-                        <?php echo htmlspecialchars($grupo['nombre_grupo']); ?>
-                    </option>
-                <?php endforeach; ?>
-            </select>
-        </div>
-        
-        <div class="form-group">
-            <label for="periodo">Periodo:</label>
-            <select id="periodo" name="periodo">
-                <option value="0">Selecciona un periodo</option>
-                <?php foreach ($periodos as $periodo): ?>
-                    <option value="<?php echo htmlspecialchars($periodo['id_periodo']); ?>">
-                        <?php echo htmlspecialchars($periodo['periodo']); ?>
-                    </option>
-                <?php endforeach; ?>
-            </select>
-        </div>
-        
-        <div id="materias">
-            <!-- Materias se mostrarán aquí -->
-        </div>
-        
-        <div id="error-message" class="error-message"></div>
-        
-        <input type="submit" value="Registrar Alumno">
-        
-        <!-- Botones adicionales -->
-        <a href="alumnos_irregulares.php" class="btn-alumnos-irregulares">Registrar Alumnos Irregulares</a>
-        <a href="actualizar_grupoperiodo.php" class="btn-alumnos-irregulares">Cargar Nuevo Periodo</a>
-        <a href="buscar_alumnos.php" class="btn-alumnos-irregulares">Buscar Alumnos</a>
-    </form>
-</div>
+    <div class="container">
+        <h2>Registrar Alumno</h2>
+        <form method="post" action="" onsubmit="return validarFormulario()">
+            <div class="form-group">
+                <label for="matricula">Matrícula:</label>
+                <input type="text" id="matricula" name="matricula" required style="text-transform: uppercase;">
+            </div>
 
-<script>
-function mostrarMaterias() {
-    var grupo_id = document.getElementById('grupo').value;
-    var xhr = new XMLHttpRequest();
-    xhr.open('GET', 'get_materias.php?grupo=' + grupo_id, true);
-    xhr.onload = function() {
-        if (xhr.status === 200) {
-            document.getElementById('materias').innerHTML = xhr.responseText;
+            <div class="form-group">
+                <label for="ap_paterno">Apellido Paterno:</label>
+                <input type="text" id="ap_paterno" name="ap_paterno" required style="text-transform: uppercase;">
+            </div>
+
+            <div class="form-group">
+                <label for="ap_materno">Apellido Materno:</label>
+                <input type="text" id="ap_materno" name="ap_materno" required style="text-transform: uppercase;">
+            </div>
+
+            <div class="form-group">
+                <label for="nombre">Nombre:</label>
+                <input type="text" id="nombre" name="nombre" required style="text-transform: uppercase;">
+            </div>
+
+            <div class="form-group">
+                <label for="grupo">Grupo:</label>
+                <select id="grupo" name="grupo" onchange="mostrarMaterias()">
+                    <option value="0">Selecciona un grupo</option>
+                    <?php foreach ($grupos as $grupo): ?>
+                        <option value="<?php echo htmlspecialchars($grupo['id_grupo']); ?>">
+                            <?php echo htmlspecialchars($grupo['nombre_grupo']); ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="periodo">Periodo:</label>
+                <select id="periodo" name="periodo">
+                    <option value="0">Selecciona un periodo</option>
+                    <?php foreach ($periodos as $periodo): ?>
+                        <option value="<?php echo htmlspecialchars($periodo['id_periodo']); ?>">
+                            <?php echo htmlspecialchars($periodo['periodo']); ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+
+            <div id="materias">
+                <!-- Materias se mostrarán aquí -->
+            </div>
+
+            <div id="error-message" class="error-message"></div>
+
+            <input type="submit" value="Registrar Alumno">
+
+            <!-- Botones adicionales -->
+            <a href="alumnos_irregulares.php" class="btn-alumnos-irregulares">Registrar Alumnos Irregulares</a>
+            <a href="actualizar_grupoperiodo.php" class="btn-alumnos-irregulares">Cargar Nuevo Periodo</a>
+            <a href="buscar_alumnos.php" class="btn-alumnos-irregulares">Buscar Alumnos</a>
+        </form>
+    </div>
+
+    <script>
+        function mostrarMaterias() {
+            var grupo_id = document.getElementById('grupo').value;
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', 'get_materias.php?grupo=' + grupo_id, true);
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    document.getElementById('materias').innerHTML = xhr.responseText;
+                }
+            };
+            xhr.send();
         }
-    };
-    xhr.send();
-}
 
-function validarFormulario() {
-    var matricula = document.getElementById('matricula').value.trim();
-    var ap_paterno = document.getElementById('ap_paterno').value.trim();
-    var ap_materno = document.getElementById('ap_materno').value.trim();
-    var nombre = document.getElementById('nombre').value.trim();
-    var grupo = document.getElementById('grupo').value;
-    var periodo = document.getElementById('periodo').value;
-    var errorMessage = document.getElementById('error-message');
-    errorMessage.textContent = '';
+        function validarFormulario() {
+            var matricula = document.getElementById('matricula').value.trim();
+            var ap_paterno = document.getElementById('ap_paterno').value.trim();
+            var ap_materno = document.getElementById('ap_materno').value.trim();
+            var nombre = document.getElementById('nombre').value.trim();
+            var grupo = document.getElementById('grupo').value;
+            var periodo = document.getElementById('periodo').value;
+            var errorMessage = document.getElementById('error-message');
+            errorMessage.textContent = '';
 
-    if (!matricula || !ap_paterno || !ap_materno || !nombre || grupo === '0' || periodo === '0') {
-        errorMessage.textContent = 'Por favor, completa todos los campos del formulario, incluyendo la selección de grupo y periodo.';
-        return false;
-    }
+            if (!matricula || !ap_paterno || !ap_materno || !nombre || grupo === '0' || periodo === '0') {
+                errorMessage.textContent = 'Por favor, completa todos los campos del formulario, incluyendo la selección de grupo y periodo.';
+                return false;
+            }
 
-    return true;
-}
-</script>
+            return true;
+        }
+    </script>
 </body>
+
 </html>

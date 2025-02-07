@@ -48,6 +48,7 @@
             padding: 0;
             margin: 0;
             display: flex;
+            margin-left: 104px;
         }
 
         .nav-menu-item {
@@ -104,7 +105,7 @@
 <body>
     <header class="header">
         <nav class="nav">
-            <a class="logo nav-link">TESI-SADRISC 2024</a>
+            <a class="logo nav-link">TESI</a>
             <ul class="nav-menu">
                 <li class="nav-menu-item"><a class="btn nav-menu-link nav-link" href="../php/alumnos.php">Alumnos</a></li>
                 <li class="nav-menu-item"><a class="btn nav-menu-link nav-link" href="../php/materias.php">Materias</a></li>

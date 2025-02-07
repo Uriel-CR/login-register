@@ -2,13 +2,9 @@
 
 $conexion = mysqli_connect("localhost", "serviciosocial", "FtW30yNo8hQd-x/G","login_register_db");
 
-/*
-if($conexion){
-
-    echo' Conectado exitosamente a la base de Datos';
-} else {
-
-    echo' No ha sea podido conectar a la base de datos';
+if (!$conexion) {
+    error_log("Error de conexión a la base de datos: " . mysqli_connect_error());
+    // Puedes redirigir a una página de error o mostrar un mensaje genérico
+    die('Error de conexión a la base de datos. Por favor, inténtelo más tarde.');
 }
-*/
 ?>
