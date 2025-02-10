@@ -273,8 +273,8 @@ $porcentaje_reprobados = [];
 
 if ($total_alumnos > 0) {
     foreach (['parcial_1', 'parcial_2', 'parcial_3', 'promedio', 'segunda_oportunidad'] as $tipo) {
-        $porcentaje_aprobados[$tipo] = isset($totales[$tipo]['aprobados']) ? round(($totales[$tipo]['aprobados'] / $total_alumnos) * 100) : 0;
-        $porcentaje_reprobados[$tipo] = isset($totales[$tipo]['reprobados']) ? round(($totales[$tipo]['reprobados'] / $total_alumnos) * 100) : 0;
+        $porcentaje_aprobados[$tipo] = isset($totales[$tipo]['aprobados']) ? ($totales[$tipo]['aprobados'] / $total_alumnos) * 100 : 0;
+        $porcentaje_reprobados[$tipo] = isset($totales[$tipo]['reprobados']) ? ($totales[$tipo]['reprobados'] / $total_alumnos) * 100 : 0;
     }
 } else {
     foreach (['parcial_1', 'parcial_2', 'parcial_3', 'promedio', 'segunda_oportunidad'] as $tipo) {
@@ -706,10 +706,17 @@ mysqli_close($conexion);
         const inputs = document.querySelectorAll('.editable input[type="text"]');
         inputs.forEach(input => {
             input.value = input.value.trim();
-            if (input.value.toUpperCase() === 'NA' || (input.value !== '' && input.value < 70)) {
+            if (input.value !== '' && input.value < 70) {
                 input.value = 'N/A';
             }
         });
+    }
+
+    function replaceNA(input) {
+        input.value = input.value.toUpperCase();
+        if (input.value === 'NA') {
+            input.value = 'N/A';
+        }
     }
 
     document.querySelector('form').addEventListener('submit', function(event) {
