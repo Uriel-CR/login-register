@@ -582,6 +582,14 @@ while ($alumno = mysqli_fetch_assoc($resultado_alumnos)) {
     $calif_final = isset($alumno['calif_final']) ? $alumno['calif_final'] : 'N/A';
 
     // Procesar parciales
+
+    $materias_query = "SELECT id_materia, creditos FROM materias";
+    $materias_result = mysqli_query($conexion, $materias_query);
+    $creditos_materias = [];
+    while ($materia = mysqli_fetch_assoc($materias_result)) {
+        $creditos_materias[$materia['id_materia']] = $materia['creditos'];
+    }
+
     foreach (['parcial_1', 'parcial_2', 'parcial_3'] as $parcial) {
         if ($alumno[$parcial] === 'N/A' || $alumno[$parcial] < 70) {
             $totales[$parcial]['reprobados']++;
