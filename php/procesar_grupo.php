@@ -151,14 +151,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $creditos_por_parcial['segunda_oportunidad'] = ['reprobados' => 0, 'aprobados' => 0];
 }
 if ($segunda_oportunidad === 'N/A') {
-    // No hacer nada, ya que se desea que aparezca 0 automáticamente en el resumen
+    $totales['segunda_oportunidad']['reprobados']++;
+    $creditos_por_parcial['segunda_oportunidad']['reprobados'] += $materia_creditos;
 } elseif (empty($segunda_oportunidad)) {
     // Mostrar 0 cuando es NULL o no tiene datos
     $totales['segunda_oportunidad']['aprobados'] += 0;
     $totales['segunda_oportunidad']['reprobados'] += 0;
-} elseif ($segunda_oportunidad < 70) {
-    $totales['segunda_oportunidad']['reprobados']++;
-    $creditos_por_parcial['segunda_oportunidad']['reprobados'] += $materia_creditos;
 } else {
     $totales['segunda_oportunidad']['aprobados']++;
     $creditos_por_parcial['segunda_oportunidad']['aprobados'] += $materia_creditos;
