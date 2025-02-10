@@ -632,9 +632,9 @@ foreach (['parcial_1', 'parcial_2', 'parcial_3', 'segunda_oportunidad', 'calific
     echo '<tr>';
     echo '<td>' . ucwords(str_replace('_', ' ', $tipo)) . '</td>';
     echo '<td>' . (isset($totales[$tipo]['reprobados']) ? $totales[$tipo]['reprobados'] : 0) . '</td>';
-    echo '<td>' . number_format($porcentaje_reprobados[$tipo], 0) . '%</td>'; // Redondeo sin decimales
+    echo '<td>' . (floor($porcentaje_reprobados[$tipo]) == $porcentaje_reprobados[$tipo] ? $porcentaje_reprobados[$tipo] : number_format($porcentaje_reprobados[$tipo], 2)) . '%</td>'; // Mostrar decimales solo si es necesario
     echo '<td>' . (isset($totales[$tipo]['aprobados']) ? $totales[$tipo]['aprobados'] : 0) . '</td>';
-    echo '<td>' . number_format($porcentaje_aprobados[$tipo], 0) . '%</td>'; // Redondeo sin decimales
+    echo '<td>' . (floor($porcentaje_aprobados[$tipo]) == $porcentaje_aprobados[$tipo] ? $porcentaje_aprobados[$tipo] : number_format($porcentaje_aprobados[$tipo], 2)) . '%</td>'; // Mostrar decimales solo si es necesario
     echo '<td>' . $total_alumnos . '</td>'; // Mostrar el total de alumnos
     echo '</tr>';
 }
