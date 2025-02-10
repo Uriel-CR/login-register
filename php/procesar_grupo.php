@@ -76,8 +76,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $segunda_oportunidad = isset($calificaciones['segunda_oportunidad']) ? $calificaciones['segunda_oportunidad'] : '';
             }
 
-            
-
             // Convertir a número o marcar como 'N/A' si es necesario
             $parcial_1_num = ($parcial_1 === 'N/A' || $parcial_1 < 70) ? 'N/A' : floatval($parcial_1);
             $parcial_2_num = ($parcial_2 === 'N/A' || $parcial_2 < 70) ? 'N/A' : floatval($parcial_2);
@@ -745,7 +743,7 @@ mysqli_close($conexion);
         if (input.value === 'NA') {
             input.value = 'N/A';
         }
-        if (input.value !== 'N/A' && (isNaN(input.value) || input.value < 0 || input.value > 100)) {
+        if (input.value !== 'N/A' && (input.value < 0 || input.value > 100)) {
             input.value = '';
         }
     }
