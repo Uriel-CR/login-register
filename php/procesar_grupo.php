@@ -542,6 +542,7 @@ if ($resultado_alumnos && mysqli_num_rows($resultado_alumnos) > 0) {
         }
 
         $disable_segunda_oportunidad = ($alumno['parcial_1'] !== 'N/A' && $alumno['parcial_2'] !== 'N/A' && $alumno['parcial_3'] !== 'N/A') ? 'disabled' : '';
+        $segunda_oportunidad_value = $disable_segunda_oportunidad ? '' : (isset($alumno['segunda_oportunidad']) ? $alumno['segunda_oportunidad'] : '');
         echo '<tr>';
         echo '<td>'.$contador.'</td>';
         echo '<td>'.$alumno['matricula'].'</td>';
@@ -552,7 +553,7 @@ if ($resultado_alumnos && mysqli_num_rows($resultado_alumnos) > 0) {
         echo '<td class="editable"><input type="text" name="alumnos['.$alumno['id_alumno'].'][parcial_2]" value="'.(isset($alumno['parcial_2']) ? $alumno['parcial_2'] : '').'" style="text-transform: uppercase;" oninput="replaceNA(this)"></td>';
         echo '<td class="editable"><input type="text" name="alumnos['.$alumno['id_alumno'].'][parcial_3]" value="'.(isset($alumno['parcial_3']) ? $alumno['parcial_3'] : '').'" style="text-transform: uppercase;" oninput="replaceNA(this)"></td>';
         echo '<td><input type="text" class="transparent-input" name="alumnos['.$alumno['id_alumno'].'][promedio]" value="'.(isset($alumno['promedio']) ? $alumno['promedio'] : '').'" readonly style="text-transform: uppercase;" oninput="replaceNA(this)"></td>';
-        echo '<td class="editable"><input type="text" name="alumnos['.$alumno['id_alumno'].'][segunda_oportunidad]" value="'.(isset($alumno['segunda_oportunidad']) ? $alumno['segunda_oportunidad'] : '').'" style="text-transform: uppercase;" oninput="replaceNA(this)" '.$disable_segunda_oportunidad.'></td>';
+        echo '<td class="editable"><input type="text" name="alumnos['.$alumno['id_alumno'].'][segunda_oportunidad]" value="'.$segunda_oportunidad_value.'" style="text-transform: uppercase;" oninput="replaceNA(this)" '.$disable_segunda_oportunidad.'></td>';
         echo '<td><input type="text" class="transparent-input" name="alumnos['.$alumno['id_alumno'].'][calif_final]" value="'.(isset($alumno['calif_final']) ? $alumno['calif_final'] : '').'" readonly style="text-transform: uppercase;" oninput="replaceNA(this)"></td>';
         echo '</tr>';
         $contador++;
@@ -714,7 +715,7 @@ mysqli_close($conexion);
         const inputs = document.querySelectorAll('.editable input[type="text"]');
         inputs.forEach(input => {
             input.value = input.value.trim();
-            if (input.value !== '' && input.value < 70) {
+            if (input.value === '' || input.value < 70) {
                 input.value = 'N/A';
             }
         });
