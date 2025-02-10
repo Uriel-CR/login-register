@@ -176,6 +176,22 @@ if ($resultado_periodos && mysqli_num_rows($resultado_periodos) > 0) {
                     materiaSelect.innerHTML = '<option value="">Error al cargar</option>';
                 });
         }
+
+        function validarFormulario(event) {
+            const grupo = document.getElementById('grupo').value;
+            const materia = document.getElementById('materia').value;
+            const periodo = document.getElementById('periodo').value;
+
+            if (!grupo || !materia || !periodo) {
+                alert('Por favor, seleccione un grupo, una materia y un período.');
+                event.preventDefault();
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.querySelector('form');
+            form.addEventListener('submit', validarFormulario);
+        });
     </script>
 </head>
 
