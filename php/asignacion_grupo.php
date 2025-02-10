@@ -12,17 +12,6 @@ if ($resultado_grupos && mysqli_num_rows($resultado_grupos) > 0) {
     }
 }
 
-// Obtener las materias
-$materias = [];
-$consulta_materias = "SELECT id_materia, nombre FROM materias";
-$resultado_materias = mysqli_query($conexion, $consulta_materias);
-
-if ($resultado_materias && mysqli_num_rows($resultado_materias) > 0) {
-    while ($materia = mysqli_fetch_assoc($resultado_materias)) {
-        $materias[] = $materia;
-    }
-}
-
 // Obtener las periodos
 $periodos = [];
 $consulta_periodos = "SELECT id_periodo, periodo FROM periodos";
@@ -33,8 +22,6 @@ if ($resultado_periodos && mysqli_num_rows($resultado_periodos) > 0) {
         $periodos[] = $periodo;
     }
 }
-
-
 ?>
 
 <!DOCTYPE html>
@@ -167,6 +154,29 @@ if ($resultado_periodos && mysqli_num_rows($resultado_periodos) > 0) {
             height: 24px;
         }
     </style>
+    <script>
+        function actualizarMaterias() {
+            const grupoId = document.getElementById('grupo').value;
+            const materiaSelect = document.getElementById('materia');
+            materiaSelect.innerHTML = '<option value="">Cargando...</option>';
+
+            fetch(`obtener_materias.php?id_grupo=${grupoId}`)
+                .then(response => response.json())
+                .then(data => {
+                    materiaSelect.innerHTML = '';
+                    data.forEach(materia => {
+                        const option = document.createElement('option');
+                        option.value = materia.id_materia;
+                        option.textContent = materia.nombre;
+                        materiaSelect.appendChild(option);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error al obtener las materias:', error);
+                    materiaSelect.innerHTML = '<option value="">Error al cargar</option>';
+                });
+        }
+    </script>
 </head>
 
 <body>
@@ -195,7 +205,8 @@ if ($resultado_periodos && mysqli_num_rows($resultado_periodos) > 0) {
 
     <form method="POST" action="procesar_grupo.php">
         <label for="grupo">Grupo:</label>
-        <select name="grupo" id="grupo">
+        <select name="grupo" id="grupo" onchange="actualizarMaterias()">
+            <option value="">Seleccione un grupo</option>
             <?php foreach ($grupos as $grupo): ?>
                 <option value="<?php echo $grupo['id_grupo']; ?>"><?php echo $grupo['nombre_grupo']; ?></option>
             <?php endforeach; ?>
@@ -203,9 +214,7 @@ if ($resultado_periodos && mysqli_num_rows($resultado_periodos) > 0) {
 
         <label for="materia">Materia:</label>
         <select name="materia" id="materia">
-            <?php foreach ($materias as $materia): ?>
-                <option value="<?php echo $materia['id_materia']; ?>"><?php echo $materia['nombre']; ?></option>
-            <?php endforeach; ?>
+            <option value="">Seleccione un grupo</option>
         </select>
 
         <label for="periodo">Periodo:</label>
