@@ -68,13 +68,27 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $parcial_1 = isset($calificaciones['parcial_1']) ? $calificaciones['parcial_1'] : '';
             $parcial_2 = isset($calificaciones['parcial_2']) ? $calificaciones['parcial_2'] : '';
             $parcial_3 = isset($calificaciones['parcial_3']) ? $calificaciones['parcial_3'] : '';
-            $segunda_oportunidad = isset($calificaciones['segunda_oportunidad']) ? $calificaciones['segunda_oportunidad'] : '';
+
+            // Validar segunda oportunidad
+            if ($parcial_1 !== 'N/A' && $parcial_2 !== 'N/A' && $parcial_3 !== 'N/A') {
+                $segunda_oportunidad = '';
+            } else {
+                $segunda_oportunidad = isset($calificaciones['segunda_oportunidad']) ? $calificaciones['segunda_oportunidad'] : '';
+            }
+
+            
 
             // Convertir a número o marcar como 'N/A' si es necesario
             $parcial_1_num = ($parcial_1 === 'N/A' || $parcial_1 < 70) ? 'N/A' : floatval($parcial_1);
             $parcial_2_num = ($parcial_2 === 'N/A' || $parcial_2 < 70) ? 'N/A' : floatval($parcial_2);
             $parcial_3_num = ($parcial_3 === 'N/A' || $parcial_3 < 70) ? 'N/A' : floatval($parcial_3);
-            $segunda_oportunidad_num = ($segunda_oportunidad === 'N/A' || $segunda_oportunidad < 70) ? 'N/A' : floatval($segunda_oportunidad);
+            
+            // Validar segunda oportunidad
+            if ($parcial_1_num !== 'N/A' && $parcial_2_num !== 'N/A' && $parcial_3_num !== 'N/A') {
+                $segunda_oportunidad_num = '';
+            } else {
+                $segunda_oportunidad_num = (($segunda_oportunidad === 'N/A' || $segunda_oportunidad < 70) && $segunda_oportunidad !== '') ? 'N/A' : floatval($segunda_oportunidad);
+            }
 
             // Calcular promedio solo si todas las calificaciones parciales son numéricas
             if ($parcial_1_num === 'N/A' || $parcial_2_num === 'N/A' || $parcial_3_num === 'N/A') {
