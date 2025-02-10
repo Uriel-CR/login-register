@@ -705,6 +705,7 @@ mysqli_close($conexion);
     function replaceNAOnSubmit() {
         const inputs = document.querySelectorAll('.editable input[type="text"]');
         inputs.forEach(input => {
+            input.value = input.value.trim();
             if (input.value.toUpperCase() === 'NA' || (input.value !== '' && input.value < 70)) {
                 input.value = 'N/A';
             }
