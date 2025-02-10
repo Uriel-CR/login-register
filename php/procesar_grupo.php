@@ -511,11 +511,11 @@ if ($total_alumnos > 0) {
         </nav>
     </header>
     
-
+    <h2><strong>Periodo:</strong> <?php echo htmlspecialchars($nombre_periodo); ?></h2>
     <h2><strong>Grupo:</strong> <?php echo htmlspecialchars($nombre_grupo); ?></h2>
     <h2><strong>Materia:</strong> <?php echo htmlspecialchars($nombre_materia); ?></h2>
     <h2><strong>Creditos:</strong> <?php echo htmlspecialchars($creditos_materia); ?></h2>
-    <h2><strong>Periodo:</strong> <?php echo htmlspecialchars($nombre_periodo); ?></h2>
+    
 <?php
 if ($resultado_alumnos && mysqli_num_rows($resultado_alumnos) > 0) {
     // Inicializar contadores
@@ -576,6 +576,7 @@ $creditos_por_parcial = array_fill_keys(['parcial_1', 'parcial_2', 'parcial_3', 
 
 // Volver a la consulta inicial para recalcular totales
 $resultado_alumnos = mysqli_query($conexion, $consulta_alumnos);
+$alumnos_segunda_oportunidad = 0; // Contador para alumnos en segunda oportunidad
 while ($alumno = mysqli_fetch_assoc($resultado_alumnos)) {
     $id_alumno = $alumno['id_alumno'];
     
@@ -601,15 +602,14 @@ while ($alumno = mysqli_fetch_assoc($resultado_alumnos)) {
         }
     }
 
-   
-
     // Procesar segunda oportunidad
-    if ($alumno['segunda_oportunidad'] === 'N/A') {
-        // No se hace nada, pero podrías ajustar aquí si necesitas
-    } elseif ($alumno['segunda_oportunidad'] < 70) {
-        $totales['segunda_oportunidad']['reprobados']++;
-    } else {
-        $totales['segunda_oportunidad']['aprobados']++;
+    if ($alumno['segunda_oportunidad'] !== '') {
+        $alumnos_segunda_oportunidad++; // Incrementar contador de alumnos en segunda oportunidad
+        if ($alumno['segunda_oportunidad'] < 70 || $alumno['segunda_oportunidad'] === 'N/A') {
+            $totales['segunda_oportunidad']['reprobados']++;
+        } else {
+            $totales['segunda_oportunidad']['aprobados']++;
+        }
     }
 
     // Procesar calificación final
@@ -624,8 +624,13 @@ while ($alumno = mysqli_fetch_assoc($resultado_alumnos)) {
 $porcentaje_reprobados = [];
 $porcentaje_aprobados = [];
 foreach ($totales as $tipo => $data) {
-    $porcentaje_reprobados[$tipo] = $total_alumnos > 0 ? ($data['reprobados'] / $total_alumnos) * 100 : 0;
-    $porcentaje_aprobados[$tipo] = $total_alumnos > 0 ? ($data['aprobados'] / $total_alumnos) * 100 : 0;
+    if ($tipo === 'segunda_oportunidad') {
+        $porcentaje_reprobados[$tipo] = $alumnos_segunda_oportunidad > 0 ? ($data['reprobados'] / $alumnos_segunda_oportunidad) * 100 : 0;
+        $porcentaje_aprobados[$tipo] = $alumnos_segunda_oportunidad > 0 ? ($data['aprobados'] / $alumnos_segunda_oportunidad) * 100 : 0;
+    } else {
+        $porcentaje_reprobados[$tipo] = $total_alumnos > 0 ? ($data['reprobados'] / $total_alumnos) * 100 : 0;
+        $porcentaje_aprobados[$tipo] = $total_alumnos > 0 ? ($data['aprobados'] / $total_alumnos) * 100 : 0;
+    }
 }
 
 // Mostrar título
@@ -644,7 +649,7 @@ foreach (['parcial_1', 'parcial_2', 'parcial_3', 'segunda_oportunidad', 'calific
     echo '<td>' . (floor($porcentaje_reprobados[$tipo]) == $porcentaje_reprobados[$tipo] ? $porcentaje_reprobados[$tipo] : number_format($porcentaje_reprobados[$tipo], 2)) . '%</td>'; // Mostrar decimales solo si es necesario
     echo '<td>' . (isset($totales[$tipo]['aprobados']) ? $totales[$tipo]['aprobados'] : 0) . '</td>';
     echo '<td>' . (floor($porcentaje_aprobados[$tipo]) == $porcentaje_aprobados[$tipo] ? $porcentaje_aprobados[$tipo] : number_format($porcentaje_aprobados[$tipo], 2)) . '%</td>'; // Mostrar decimales solo si es necesario
-    echo '<td>' . $total_alumnos . '</td>'; // Mostrar el total de alumnos
+    echo '<td>' . ($tipo === 'segunda_oportunidad' ? $alumnos_segunda_oportunidad : $total_alumnos) . '</td>'; // Mostrar el total de alumnos
     echo '</tr>';
 }
 
@@ -715,7 +720,7 @@ mysqli_close($conexion);
         const inputs = document.querySelectorAll('.editable input[type="text"]');
         inputs.forEach(input => {
             input.value = input.value.trim();
-            if (input.value === '' || input.value < 70) {
+            if (input.value === '' || input.value < 70 || input.value > 100) {
                 input.value = 'N/A';
             }
         });
@@ -725,6 +730,9 @@ mysqli_close($conexion);
         input.value = input.value.toUpperCase();
         if (input.value === 'NA') {
             input.value = 'N/A';
+        }
+        if (input.value !== 'N/A' && (isNaN(input.value) || input.value < 0 || input.value > 100)) {
+            input.value = '';
         }
     }
 
