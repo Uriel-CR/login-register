@@ -186,8 +186,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 function guardarResumenCalificaciones($conexion, $id_grupo, $id_materia, $id_periodo, $totales, $creditos_por_parcial)
 {
     // Obtener el número total de alumnos
-    $total_alumnos_query = "
-        SELECT COUNT(DISTINCT a.id_alumno) AS total_alumnos
+    $total_alumnos_query = "SELECT COUNT(DISTINCT a.id_alumno) AS total_alumnos
         FROM alumnos a 
         JOIN calificaciones c ON a.id_alumno = c.id_alumno 
         JOIN periodos p ON c.id_periodo = p.id_periodo
@@ -209,8 +208,7 @@ function guardarResumenCalificaciones($conexion, $id_grupo, $id_materia, $id_per
 
     if ($exists) {
         // Actualizar el resumen existente
-        $query = "
-            UPDATE calificaciones_resumen SET 
+        $query = "UPDATE calificaciones_resumen SET 
                 total_alumnos = '$total_alumnos',
                 parcial_1_reprobados = '{$totales['parcial_1']['reprobados']}',
                 parcial_1_aprobados = '{$totales['parcial_1']['aprobados']}',
@@ -240,8 +238,7 @@ function guardarResumenCalificaciones($conexion, $id_grupo, $id_materia, $id_per
         ";
     } else {
         // Insertar un nuevo resumen
-        $query = "
-            INSERT INTO calificaciones_resumen (
+        $query = "INSERT INTO calificaciones_resumen (
                 id_grupo, id_materia, id_periodo, total_alumnos,
                 parcial_1_reprobados, parcial_1_aprobados,
                 parcial_2_reprobados, parcial_2_aprobados,

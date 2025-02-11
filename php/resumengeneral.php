@@ -49,28 +49,25 @@
     $parcial = isset($_GET['parcial']) ? intval($_GET['parcial']) : 1; // Valor por defecto si no se proporciona
 
     // Consultas SQL
-    $sql_grupos = "
-    SELECT g.nombre_grupo, 
-           pg.id_grupo, 
-           SUM(CASE WHEN CAST(pg.Promedio_parcial1 AS DECIMAL) >= 70 THEN 1 ELSE 0 END) AS aprobados_p1,
-           SUM(CASE WHEN pg.Promedio_parcial1 = 'N/A' THEN 1 ELSE 0 END) AS reprobados_p1,
-           SUM(CASE WHEN CAST(pg.Promedio_parcial2 AS DECIMAL) >= 70 THEN 1 ELSE 0 END) AS aprobados_p2,
-           SUM(CASE WHEN pg.Promedio_parcial2 = 'N/A' THEN 1 ELSE 0 END) AS reprobados_p2,
-           SUM(CASE WHEN CAST(pg.Promedio_parcial3 AS DECIMAL) >= 70 THEN 1 ELSE 0 END) AS aprobados_p3,
-           SUM(CASE WHEN pg.Promedio_parcial3 = 'N/A' THEN 1 ELSE 0 END) AS reprobados_p3
-    FROM promedios_generales pg
-    JOIN grupos g ON pg.id_grupo = g.id_grupo
-    WHERE pg.id_periodo = ? 
-    GROUP BY pg.id_grupo, g.nombre_grupo";
+    $sql_grupos = "SELECT g.nombre_grupo, 
+           c.id_grupo, 
+           SUM(CASE WHEN CAST(c.parcial_1 AS DECIMAL) >= 70 THEN 1 ELSE 0 END) AS aprobados_p1,
+           SUM(CASE WHEN c.parcial_1 = 'N/A' THEN 1 ELSE 0 END) AS reprobados_p1,
+           SUM(CASE WHEN CAST(c.parcial_2 AS DECIMAL) >= 70 THEN 1 ELSE 0 END) AS aprobados_p2,
+           SUM(CASE WHEN c.parcial_2 = 'N/A' THEN 1 ELSE 0 END) AS reprobados_p2,
+           SUM(CASE WHEN CAST(c.parcial_3 AS DECIMAL) >= 70 THEN 1 ELSE 0 END) AS aprobados_p3,
+           SUM(CASE WHEN c.parcial_3 = 'N/A' THEN 1 ELSE 0 END) AS reprobados_p3
+    FROM calificaciones c
+    JOIN grupos g ON c.id_grupo = g.id_grupo
+    WHERE c.id_periodo = ? 
+    GROUP BY c.id_grupo, g.nombre_grupo";
 
-    $sql_alumnos = "
-    SELECT id_grupo, COUNT(DISTINCT id_alumno) AS total_alumnos
+    $sql_alumnos = "SELECT id_grupo, COUNT(DISTINCT id_alumno) AS total_alumnos
     FROM calificaciones
     WHERE id_periodo = ?
     GROUP BY id_grupo";
 
-    $sql_resumen = "
-    SELECT id_grupo, 
+    $sql_resumen = "SELECT id_grupo, 
            SUM(CASE WHEN ? = 1 THEN parcial_1_aprobados 
                     WHEN ? = 2 THEN parcial_2_aprobados 
                     WHEN ? = 3 THEN parcial_3_aprobados 
@@ -79,8 +76,7 @@
     WHERE id_periodo = ?
     GROUP BY id_grupo";
 
-    $sql_reprobadas = "
-    SELECT id_grupo, 
+    $sql_reprobadas = "SELECT id_grupo, 
            SUM(CASE WHEN ? = 1 THEN parcial_1_reprobados 
                     WHEN ? = 2 THEN parcial_2_reprobados 
                     WHEN ? = 3 THEN parcial_3_reprobados 
@@ -88,6 +84,7 @@
     FROM calificaciones_resumen
     WHERE id_periodo = ?
     GROUP BY id_grupo";
+
     $sql_periodos = "SELECT id_periodo, periodo FROM periodos";
     // Preparar y ejecutar consultas
     $stmt_grupos = $conn->prepare($sql_grupos);
