@@ -46,29 +46,169 @@ mysqli_close($conexion);
     <link rel="stylesheet" href="../assets/css/style.css">
     <link href="../assets/css/minimal-table.css" rel="stylesheet" type="text/css">
     <style>
-        /* Estilos personalizados para el botón de regreso */
-        .boton-regresar {
-            background-color: #007bff; /* Color de fondo azul */
-            color: white; /* Color del texto blanco */
-            border: none; /* Sin borde */
-            padding: 10px 20px; /* Espaciado interno */
-            text-align: center; /* Centrar texto */
-            text-decoration: none; /* Sin subrayado */
-            display: inline-block; /* Para el espaciado adecuado */
-            font-size: 16px; /* Tamaño de fuente */
-            border-radius: 5px; /* Bordes redondeados */
-            cursor: pointer; /* Cursor en forma de mano */
-            margin-top: 10px; /* Espacio superior */
+        body {
+            background-image: url('../assets/images/foto.jpeg');
+            background-size: 100% auto;
+            background-position: center top;
+            background-repeat: no-repeat;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
         }
-        
-        .boton-regresar:hover {
-            background-color: #0056b3; /* Color de fondo en hover */
+        .container {
+            width: 80%;
+            margin: 20px auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
         }
 
-        /* Alineación del botón en el centro de la página */
-        .centered-button {
-            text-align: center; /* Centrar el contenido del contenedor */
-            margin-top: 20px; /* Espacio superior */
+        .header {
+            background-color: #007BFF;
+            color: #fff;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: sticky;
+            /* Hace que el encabezado se quede fijo en la parte superior */
+            top: 0;
+            /* Asegura que el encabezado esté en la parte superior de la página */
+            width: 100%;
+            /* Asegura que el encabezado ocupe todo el ancho de la ventana */
+            z-index: 1000;
+            /* Asegura que el encabezado esté sobre otros elementos */
+        }
+
+        .logo {
+            
+            font-size: 24px;
+            font-weight: bold;
+            position: fixed;
+            left: 0;
+            margin: 10px;
+        }
+
+        .nav {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .nav-menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+        }
+
+        .nav-menu-item {
+            margin-right: 15px;
+        }
+
+        .nav-menu-link {
+            color: #fff;
+            text-decoration: none;
+            font-size: 16px;
+            padding: 10px 15px;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+        }
+
+        .nav-menu-link:hover, .nav-menu-link.selected {
+            background-color: #0056b3;
+        }
+
+        h1 {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 28px;
+            color: #333;
+        }
+
+        form {
+            width: 80%;
+            max-width: 800px;
+            margin: 20px auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        table {
+            width: 100%;
+            margin: 20px 0;
+            border-collapse: collapse;
+            background: #fff;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f4f4f4;
+            font-weight: bold;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        input[type="number"], input[type="text"], select {
+            width: calc(100% - 22px);
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        label {
+            display: block;
+            margin: 5px 0;
+            font-weight: bold;
+        }
+
+        .boton {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        .boton:hover {
+            background-color: #0056b3;
+        }
+
+        .materias-lista {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .materias-lista li {
+            margin: 5px 0;
         }
     </style>
 </head>
@@ -76,7 +216,17 @@ mysqli_close($conexion);
 <header class="header">
     <nav class="nav">
         <a class="logo nav-link"> TESI </a>
-        <!-- Agrega el menú de navegación aquí si es necesario -->
+        <ul class="nav-menu">
+            <li class="nav-menu-item"><a class="nav-menu-link" href="../php/bienvenida.php">Inicio</a></li>
+            <li class="nav-menu-item"><a class="nav-menu-link" href="../php/alumnos.php">Alumnos</a></li>
+            <li class="nav-menu-item"><a class="nav-menu-link" href="../php/materias.php">Materias</a></li>
+            <li class="nav-menu-item"><a class="nav-menu-link selected">Grupos</a></li>
+            <li class="nav-menu-item"><a class="nav-menu-link" href="../php/profesores.php">Profesores</a></li>
+            <li class="nav-menu-item"><a class="nav-menu-link" href="../php/periodo.php">Periodo</a></li>
+            <li class="nav-menu-item"><a class="nav-menu-link" href="../php/asignacion_grupo.php">Calificaciones</a></li>
+            <li class="nav-menu-item"><a class="nav-menu-link" href="../php/resumen.php">Resumen</a></li>
+            <li class="nav-menu-item"><a class="nav-menu-link" href="../index.php">Cerrar Sesión</a></li>
+        </ul>
     </nav>
 </header>
 
