@@ -153,12 +153,12 @@ if ($segunda_oportunidad === 'N/A') {
         }
 
         // Informar que las calificaciones se guardaron correctamente
-        echo "Calificaciones guardadas correctamente.";
+        // echo "Calificaciones guardadas correctamente.";
 
         // Llamar a la función para guardar el resumen en la base de datos
         guardarResumenCalificaciones($conexion, $id_grupo, $id_materia, $id_periodo, $totales, $creditos_por_parcial);
     } else {
-        echo "No se recibieron datos de los alumnos.";
+        // echo "No se recibieron datos de los alumnos.";
     }
 }
 
@@ -366,11 +366,19 @@ if ($total_alumnos > 0) {
         .header {
             background-color: #007BFF;
             color: #fff;
-            padding: 40px 20px;
+            padding: 10px 20px;
             display: flex;
             align-items: center;
             justify-content: space-between;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: sticky;
+            /* Hace que el encabezado se quede fijo en la parte superior */
+            top: 0;
+            /* Asegura que el encabezado esté en la parte superior de la página */
+            width: 100%;
+            /* Asegura que el encabezado ocupe todo el ancho de la ventana */
+            z-index: 1000;
+            /* Asegura que el encabezado esté sobre otros elementos */
         }
         .logo {
             font-size: 24px;
