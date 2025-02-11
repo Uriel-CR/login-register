@@ -25,7 +25,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <style>
         body {
             background-image: url('../login-register/assets/images/bj9.jpg');
-            background-size: 110% auto; /* Ajusta la escala horizontal al 100% y la escala vertical de forma automática */
+            background-size: 107% auto; /* Ajusta la escala horizontal al 100% y la escala vertical de forma automática */
             background-position: center top; /* Centra la imagen horizontalmente y la alinea en la parte superior */
             background-repeat: no-repeat;
             font-family: Arial, sans-serif;
@@ -41,6 +41,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             align-items: center;
             justify-content: space-between;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: sticky;
+            /* Hace que el encabezado se quede fijo en la parte superior */
+            top: 0;
+            /* Asegura que el encabezado esté en la parte superior de la página */
+            width: 100%;
+            /* Asegura que el encabezado ocupe todo el ancho de la ventana */
+            z-index: 1000;
+            /* Asegura que el encabezado esté sobre otros elementos */
         }
 
         .logo {
