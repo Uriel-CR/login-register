@@ -71,7 +71,12 @@ if (isset($_POST['submit_profesor'])) {
     
     // Ejecutar la declaración
     if ($stmt->execute()) {
-        echo "Profesor guardado exitosamente.";
+        echo'
+        <script>
+        alert("Profesor guardado correctamente");
+        window.location= "profesores.php";
+        </script>
+        ';
     } else {
         echo "Error al guardar el profesor: " . $stmt->error;
     }
@@ -111,7 +116,12 @@ if (isset($_POST['submit_turno'])) {
     
     // Ejecutar la declaración
     if ($stmt->execute()) {
-        echo "Turno guardado exitosamente.";
+        echo'
+        <script>
+        alert("Turno guardado exitosamente");
+        window.location= "profesores.php";
+        </script>
+        ';
     } else {
         echo "Error al guardar el turno: " . $stmt->error;
     }
@@ -169,6 +179,14 @@ $conn->close();
             align-items: center;
             justify-content: space-between;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: sticky;
+            /* Hace que el encabezado se quede fijo en la parte superior */
+            top: 0;
+            /* Asegura que el encabezado esté en la parte superior de la página */
+            width: 100%;
+            /* Asegura que el encabezado ocupe todo el ancho de la ventana */
+            z-index: 1000;
+            /* Asegura que el encabezado esté sobre otros elementos */
         }
         h1 {
             text-align: center;

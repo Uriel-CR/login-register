@@ -51,7 +51,7 @@
 
     <!-- Botón para ir a inicio.php -->
     <div style="text-align: center; margin-top: 20px;">
-    <a href="inicio.php" class="boton_inicio" style="display: inline-block; padding: 15px 25px; background-color: red; color: white; text-decoration: none; border-radius: 5px; border: none; cursor: pointer; font-size: 16px; transition: background-color 0.3s;">Regresar</a>
+    <a href="index.php" class="boton_inicio" style="display: inline-block; padding: 15px 25px; background-color: red; color: white; text-decoration: none; border-radius: 5px; border: none; cursor: pointer; font-size: 16px; transition: background-color 0.3s;">Regresar</a>
 </div>
 
 

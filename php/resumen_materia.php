@@ -96,6 +96,14 @@
             align-items: center;
             justify-content: space-between;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: sticky;
+            /* Hace que el encabezado se quede fijo en la parte superior */
+            top: 0;
+            /* Asegura que el encabezado esté en la parte superior de la página */
+            width: 100%;
+            /* Asegura que el encabezado ocupe todo el ancho de la ventana */
+            z-index: 1000;
+            /* Asegura que el encabezado esté sobre otros elementos */
         }
         .nav {
             display: flex;

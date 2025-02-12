@@ -45,7 +45,7 @@
             <input type="email" placeholder="Correo Electrónico" name="correo" required>
             <input type="password" placeholder="Contraseña" name="contrasena" required>
             <button>Ingresar</button>
-            <button type="button" class="boton-regresar" onclick="window.location.href='inicio.php'">Regresar</button>
+            <button type="button" class="boton-regresar" onclick="window.location.href='index.php'">Regresar</button>
         </form>
     </div>
 </main>

@@ -27,8 +27,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         header("location: ../alumnophp/pdf/PruebaV.php");
         exit();
     } else {
-        // Usuario no encontrado o credenciales incorrectas, manejar el error
-        echo "Matrícula o contraseña incorrecta. <a href='../index.html'>Volver al inicio</a>";
+        // Usuario no encontrado o credenciales incorrectas, manejar el errorggggg
+        echo'
+    <script>
+    alert("Matrícula o contraseña incorrecta");
+    window.location= "../alumno.php";
+    </script>
+    ';
+exit;
     }
 
     // Cerrar la consulta preparada

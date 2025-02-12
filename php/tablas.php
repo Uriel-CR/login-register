@@ -16,7 +16,7 @@
         padding: 0;
     }
     .container {
-        max-width: 900px;
+        max-width: 900px auto;
         margin: 20px auto;
         background-color: #aed6f1;
         padding: 30px;
@@ -66,17 +66,37 @@
         background-color: #dfd;
     }
     .header {
-        background-color: #007BFF;
-        color: #fff;
-        padding: 10px 20px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    }
+            background-color: #007BFF;
+            color: #fff;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: sticky;
+            /* Hace que el encabezado se quede fijo en la parte superior */
+            top: 0;
+            /* Asegura que el encabezado esté en la parte superior de la página */
+            width: 100%;
+            /* Asegura que el encabezado ocupe todo el ancho de la ventana */
+            z-index: 1000;
+            /* Asegura que el encabezado esté sobre otros elementos */
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            position: fixed;
+            left: 0;
+            margin: 10px;
+        }
+
     .nav {
-        display: flex;
-        align-items: center;
+            display: flex;
+            align-items: center;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
     }
     .nav-link {
         color: #fff;
@@ -90,15 +110,27 @@
         margin: 0;
     }
     .nav-menu-item {
-        margin: 0 10px;
+        margin: 15px;
     }
     .nav-menu-link {
         color: #fff;
-        text-decoration: none;
+            text-decoration: none;
+            font-size: 16px;
+            padding: 10px 15px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
     }
     .nav-toggle {
-        display: none;
-    }
+            display: none; /* Mostrar solo en dispositivos móviles */
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .nav-toggle-icon {
+            width: 24px;
+            height: 24px;
+        }
 </style>
 <script>
     function updateGroups() {
@@ -146,22 +178,24 @@
 </head>
 <body>
 <header class="header">
-    <nav class="nav">
-        <a class="logo nav-link">TESI</a>
-        <ul class="nav-menu">
-            <li class="nav-menu-item"><a class="btn nav-menu-link nav-link" href="../php/alumnos.php">Alumnos</a></li>
-            <li class="nav-menu-item"><a class="btn nav-menu-link nav-link" href="../php/materias.php">Materias</a></li>
-            <li class="nav-menu-item"><a class="btn nav-menu-link nav-link" href="../php/grupos.php">Grupos</a></li>
-            <li class="nav-menu-item"><a class="btn nav-menu-link nav-link" href="../php/profesores.php">Profesores</a></li>
-            <li class="nav-menu-item"><a class="btn nav-menu-link nav-link" href="../php/periodo.php">Periodo</a></li>
-            <li class="nav-menu-item"><a class="nav-menu-link" href="../php/asignacion_grupo.php">Calificaciones</a></li>
-            <li class="nav-menu-item"><a class="btn nav-menu-link nav-link" href="../php/resumen.php">Resumen</a></li>
-            <li class="nav-menu-item"><a class="btn nav-menu-link nav-link" href="../index.php">Cerrar Sesión</a></li>
-        </ul>
-        <button class="nav-toggle">
-        </button>
-    </nav>
-</header>
+        <nav class="nav">
+            <a class="logo nav-link">TESI</a>
+            <ul class="nav-menu">
+                <li class="nav-menu-item"><a class="nav-menu-link" href="../php/bienvenida.php">Inicio</a></li>
+                <li class="nav-menu-item"><a class="nav-menu-link"  href="../php/alumnos.php">Alumnos</a></li>
+                <li class="nav-menu-item"><a class="nav-menu-link" href="../php/materias.php">Materias</a></li>
+                <li class="nav-menu-item"><a class="nav-menu-link" href="../php/grupos.php">Grupos</a></li>
+                <li class="nav-menu-item"><a class="nav-menu-link" href="../php/profesores.php">Profesores</a></li>
+                <li class="nav-menu-item"><a class="nav-menu-link" href="../php/periodo.php">Periodo</a></li>
+                <li class="nav-menu-item"><a class="nav-menu-link" href="../php/asignacion_grupo.php">Calificaciones</a></li>
+                <li class="nav-menu-item"><a class="nav-menu-link selected" href="../php/resumen.php">Resumen</a></li>
+                <li class="nav-menu-item"><a class="nav-menu-link" href="../index.php">Cerrar Sesión</a></li>
+            </ul>
+            <button class="nav-toggle">
+                <img src="../assets/images/menu.svg" class="nav-toggle-icon" alt="">
+            </button>
+        </nav>
+    </header>
 <div class="container">
     <h2>PROMEDIOS DE ALUMNO POR GRUPO</h2>
 

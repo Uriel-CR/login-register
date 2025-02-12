@@ -22,7 +22,12 @@ if (isset($_POST['register'])) {
     mysqli_stmt_bind_param($stmt, "siiiiii", $nombre_grupo, $materias[0], $materias[1], $materias[2], $materias[3], $materias[4], $materias[5]);
 
     if (mysqli_stmt_execute($stmt)) {
-        echo "Grupo registrado exitosamente.";
+        echo'
+        <script>
+        alert("Grupo registrado correctamente");
+        window.location= "grupos.php";
+        </script>
+        ';
     } else {
         echo "Error al registrar el grupo: " . mysqli_error($conexion);
     }
