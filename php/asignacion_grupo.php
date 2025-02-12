@@ -1,4 +1,5 @@
 <?php
+require 'verificar_sesion.php';
 include 'conexion_be.php';
 
 // Obtener los grupos para el botón desplegable
@@ -243,26 +244,7 @@ if ($resultado_periodos && mysqli_num_rows($resultado_periodos) > 0) {
 </head>
 
 <body>
-    <header class="header">
-        <nav class="nav">
-            <a class="logo nav-link">TESI</a>
-            <ul class="nav-menu">
-                <li class="nav-menu-item"><a class="nav-menu-link" href="../php/bienvenida.php">Inicio</a></li>
-                <li class="nav-menu-item"><a class="nav-menu-link " href="../php/alumnos.php">Alumnos</a></li>
-                <li class="nav-menu-item"><a class="nav-menu-link" href="../php/materias.php">Materias</a></li>
-                <li class="nav-menu-item"><a class="nav-menu-link" href="../php/grupos.php">Grupos</a></li>
-                <li class="nav-menu-item"><a class="nav-menu-link" href="../php/profesores.php">Profesores</a></li>
-                <li class="nav-menu-item"><a class="nav-menu-link" href="../php/periodo.php">Periodo</a></li>
-                <li class="nav-menu-item"><a class="nav-menu-link selected">Calificaciones</a></li>
-                <li class="nav-menu-item"><a class="nav-menu-link" href="../php/resumen.php">Resumen</a></li>
-                <li class="nav-menu-item"><a class="nav-menu-link" href="../index.php">Cerrar Sesión</a></li>
-            </ul>
-            <button class="nav-toggle">
-                <img src="../assets/images/menu.svg" class="nav-toggle-icon" alt="">
-            </button>
-        </nav>
-    </header>
-
+    <?php include 'header.html'; ?>
     <div class="container">
         <h1>Seleccionar Grupo, Materia y Período</h1>
 

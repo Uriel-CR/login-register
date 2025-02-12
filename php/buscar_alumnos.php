@@ -1,4 +1,5 @@
 <?php
+require 'verificar_sesion.php';
 // Configuración de la base de datos
 $servername = "localhost";
 $username = "serviciosocial";
@@ -242,25 +243,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['buscar'])) {
     </script>
 </head>
 <body>
-<header class="header">
-    <nav class="nav">
-        <a class="logo nav-link">TESI</a>
-        <ul class="nav-menu">
-            <li class="nav-menu-item"><a class="nav-menu-link" href="../php/bienvenida.php">Inicio</a></li>
-            <li class="nav-menu-item"><a class="nav-menu-link selected" href="../php/alumnos.php">Alumnos</a></li>
-            <li class="nav-menu-item"><a class="nav-menu-link" href="../php/materias.php">Materias</a></li>
-            <li class="nav-menu-item"><a class="nav-menu-link" href="../php/grupos.php">Grupos</a></li>
-            <li class="nav-menu-item"><a class="nav-menu-link" href="../php/profesores.php">Profesores</a></li>
-            <li class="nav-menu-item"><a class="nav-menu-link" href="../php/periodo.php">Periodo</a></li>
-            <li class="nav-menu-item"><a class="nav-menu-link" href="../php/asignacion_grupo.php">Calificaciones</a></li>
-            <li class="nav-menu-item"><a class="nav-menu-link" href="../php/resumen.php">Resumen</a></li>
-            <li class="nav-menu-item"><a class="nav-menu-link" href="../index.php">Cerrar Sesión</a></li>
-        </ul>
-        <button class="nav-toggle">
-            <img src="../assets/images/menu.svg" class="nav-toggle-icon" alt="">
-        </button>
-    </nav>
-</header>
+<?php include 'header.html'; ?>
 
 <div class="container">
     <h2>Buscar Alumno</h2>

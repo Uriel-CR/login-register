@@ -1,3 +1,6 @@
+<?php
+require 'verificar_sesion.php';
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -140,26 +143,7 @@
     </style>
 </head>
 <body>
-    <header class="header">
-        <nav class="nav">
-            <a class="logo nav-link">TESI</a>
-            <ul class="nav-menu">
-            <li class="nav-menu-item"><a class="nav-menu-link" href="../php/bienvenida.php">Inicio</a></li>
-                <li class="nav-menu-item"><a class="nav-menu-link" href="../php/alumnos.php">Alumnos</a></li>
-                <li class="nav-menu-item"><a class="nav-menu-link" href="../php/materias.php">Materias</a></li>
-                <li class="nav-menu-item"><a class="nav-menu-link" href="../php/grupos.php">Grupos</a></li>
-                <li class="nav-menu-item"><a class="nav-menu-link" href="../php/profesores.php">Profesores</a></li>
-                <li class="nav-menu-item"><a class="nav-menu-link selected">Periodo</a></li>
-                <li class="nav-menu-item"><a class="nav-menu-link" href="../php/asignacion_grupo.php">Calificaciones</a></li>
-                <li class="nav-menu-item"><a class="nav-menu-link" href="../php/resumen.php">Resumen</a></li>
-                <li class="nav-menu-item"><a class="nav-menu-link" href="../index.php">Cerrar Sesión</a></li>
-            </ul>
-            <button class="nav-toggle">
-                <img src="../assets/images/menu.svg" class="nav-toggle-icon" alt="Menu">
-            </button>
-        </nav>
-    </header>
-
+    <?php include 'header.html'; ?>
     <h1>Registro de Periodos</h1>
 
     <form method="POST">
@@ -167,11 +151,11 @@
             <tbody>
                 <tr>
                     <th rowspan="1">Periodo</th>
-                    <td><input type="text" name="periodo" oninput="convertirMayusculas(this)"></td>
+                    <td><input type="text" name="periodo" oninput="convertirMayusculas(this)" id="periodo"></td>
                 </tr>
                 <tr>
                     <td colspan="1"><input class="boton" type="submit" name="consulta" value="Datos"></td>
-                    <td colspan="2"><input class="boton" type="submit" name="register" value="Enviar"></td></td>
+                    <td colspan="2"><input class="boton" type="submit" name="register" value="Enviar" onclick="return validarFormulario()"></td>
                 </tr>
                 <tr>
                     <td colspan="3">
@@ -184,6 +168,18 @@
     </form>
 
     <script>
+        function validarFormulario() {
+            var periodo = document.getElementById('periodo').value;
+            if (periodo.trim() === '') {
+                alert('Por favor, ingrese un periodo.');
+                return false;
+            }
+            return true;
+        }
+
+        function convertirMayusculas(element) {
+            element.value = element.value.toUpperCase();
+        }
         // Incluye las funciones JavaScript
         <?php include '../assets/js/script1.js'; ?>
         
