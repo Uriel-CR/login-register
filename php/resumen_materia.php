@@ -333,8 +333,14 @@
                 $numero_fila = 1;
 
                 while ($row = $result_reporte->fetch_assoc()) {
-                    $porcentaje_aprobados = $row['total_alumnos'] > 0 ? ($row['alumnos_aprobados'] / $row['total_alumnos']) * 100 : 0;
-                    $porcentaje_reprobados = $row['total_alumnos'] > 0 ? ($row['alumnos_reprobados'] / $row['total_alumnos']) * 100 : 0;
+                    if ($parcial == '2o') {
+                        $total_alumnos_parcial = $row['alumnos_aprobados'] + $row['alumnos_reprobados'];
+                    } else {
+                        $total_alumnos_parcial = $row['total_alumnos'];
+                    }
+
+                    $porcentaje_aprobados = $total_alumnos_parcial > 0 ? ($row['alumnos_aprobados'] / $total_alumnos_parcial) * 100 : 0;
+                    $porcentaje_reprobados = $total_alumnos_parcial > 0 ? ($row['alumnos_reprobados'] / $total_alumnos_parcial) * 100 : 0;
                     $total_creditos = $row['creditos_aprobados'] + $row['creditos_reprobados'];
                     $porcentaje_creditos_aprobados = $total_creditos > 0 ? ($row['creditos_aprobados'] / $total_creditos) * 100 : 0;
                     $porcentaje_creditos_reprobados = $total_creditos > 0 ? ($row['creditos_reprobados'] / $total_creditos) * 100 : 0;
@@ -345,7 +351,7 @@
                             <td>" . htmlspecialchars($row['clave_materia']) . "</td>           
                             <td>" . htmlspecialchars($row['nombre_materia']) . "</td>
                             <td>" . htmlspecialchars($row['creditos_materia']) . "</td>         
-                            <td>" . htmlspecialchars($row['total_alumnos']) . "</td>
+                            <td>" . htmlspecialchars($total_alumnos_parcial) . "</td>
                             <td>" . htmlspecialchars($row['alumnos_aprobados']) . "</td>
                             <td>" . htmlspecialchars($row['alumnos_reprobados']) . "</td>
                             <td>" . number_format($porcentaje_aprobados, 2) . "%</td>
@@ -356,7 +362,7 @@
                             <td>" . number_format($porcentaje_creditos_reprobados, 2) . "%</td>
                         </tr>";
 
-                    $total_alumnos += $row['total_alumnos'];
+                    $total_alumnos += $total_alumnos_parcial;
                     $total_aprobados += $row['alumnos_aprobados'];
                     $total_reprobados += $row['alumnos_reprobados'];
                     $total_materias_aprobadas += $row['creditos_aprobados'];
