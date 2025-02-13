@@ -240,10 +240,15 @@ include 'header.html';
                 echo "<tr>
                         <th>Materia $i</th>
                         <td>
+                            <label>Nombre:</label>
                             <input type='text' name='materia$i' value='" . htmlspecialchars($materia_nombre) . "' " . ($materia_id ? "" : "disabled") . ">
+                            <label>Clave:</label>
                             <input type='text' name='clave_materia$i' value='" . htmlspecialchars($clave_materia) . "' placeholder='Clave'>
+                            <label>Horas Teóricas:</label>
                             <input type='number' name='hrs_teoricas$i' value='" . htmlspecialchars($hrs_teoricas) . "' placeholder='Horas Teóricas'>
+                            <label>Horas Prácticas:</label>
                             <input type='number' name='hrs_practicas$i' value='" . htmlspecialchars($hrs_practicas) . "' placeholder='Horas Prácticas'>
+                            <label>Créditos:</label>
                             <input type='number' name='creditos$i' value='" . htmlspecialchars($creditos_calculados) . "' placeholder='Créditos'>
                         </td>
                       </tr>";
