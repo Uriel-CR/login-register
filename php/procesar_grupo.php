@@ -319,248 +319,7 @@ if ($total_alumnos > 0) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro de Calificaciones</title>
     <link rel="stylesheet" href="../assets/css/style.css" type="text/css">
-    <style>
-        /* Estilos para la página */
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-        }
-
-        h2 {
-            margin-top: 0;
-            text-align: center;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-        }
-
-        th,
-        td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
-        }
-
-        th {
-            background-color: #f2f2f2;
-        }
-
-        tr:nth-child(even) {
-            background-color: #f2f2f2;
-        }
-
-        .editable {
-            cursor: pointer;
-        }
-
-        .editable input[type="text"] {
-            width: 80px;
-            padding: 5px;
-            border: 1px solid #ccc;
-            background-color: #fff;
-            text-align: center;
-            /* Centrar el texto dentro de los campos de entrada */
-        }
-
-        .editable input[type="text"]:read-only {
-            border: none;
-            background-color: transparent;
-        }
-
-        .editable input[type="text"]:focus {
-            outline: none;
-            border: 1px solid blue;
-        }
-
-        .button-container {
-            margin-top: 20px;
-        }
-
-        .button-container a {
-            text-decoration: none;
-        }
-
-        .button-container a button {
-            background-color: #fff;
-            color: white;
-            border: none;
-            cursor: pointer;
-            padding: 10px 20px;
-        }
-
-        .button-container a button:hover {
-            background-color: #45a049;
-        }
-
-        .button-container a.regresar button {
-            background-color: #f44336;
-        }
-
-        .button-container a.regresar button:hover {
-            background-color: #d32f2f;
-        }
-
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f9;
-            color: #333;
-            margin: 0;
-            padding: 0;
-        }
-
-        .header {
-            background-color: #007BFF;
-            color: #fff;
-            padding: 10px 20px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            position: sticky;
-            /* Hace que el encabezado se quede fijo en la parte superior */
-            top: 0;
-            /* Asegura que el encabezado esté en la parte superior de la página */
-            width: 100%;
-            /* Asegura que el encabezado ocupe todo el ancho de la ventana */
-            z-index: 1000;
-            /* Asegura que el encabezado esté sobre otros elementos */
-        }
-
-        .logo {
-            font-size: 24px;
-            font-weight: bold;
-            position: fixed;
-            left: 0;
-            margin: 10px;
-        }
-
-        .container {
-            background: #fff;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            width: 80%;
-            max-width: 600px;
-            margin: 100px auto;
-        }
-
-        h1 {
-            text-align: center;
-            color: #333;
-        }
-
-        form {
-            margin-top: 20px;
-            display: flex;
-            flex-direction: column;
-        }
-
-        label {
-            margin-bottom: 10px;
-            color: #666;
-        }
-
-        select,
-        input[type="submit"] {
-            padding: 10px;
-            margin-bottom: 20px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 16px;
-        }
-
-        input[type="submit"] {
-            background-color: #4CAF50;
-            color: white;
-            cursor: pointer;
-            text-transform: uppercase;
-        }
-
-        input[type="submit"]:hover {
-            background-color: #45a049;
-        }
-
-        .btn-regresar {
-            text-align: center;
-            margin-top: 20px;
-        }
-
-        .btn-regresar a {
-            display: inline-block;
-            padding: 10px 20px;
-            background-color: #f44336;
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-        }
-
-        .btn-regresar a:hover {
-            background-color: #d32f2f;
-        }
-
-        .nav {
-            display: flex;
-            align-items: center;
-            width: 100%;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .nav-menu {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            display: flex;
-        }
-
-        .nav-menu-item {
-            margin-right: 15px;
-        }
-
-        .nav-menu-link {
-            color: #fff;
-            text-decoration: none;
-            font-size: 16px;
-            padding: 10px 15px;
-            border-radius: 5px;
-            transition: background-color 0.3s ease;
-        }
-
-        .nav-menu-link.selected,
-        .nav-menu-link:hover {
-            background-color: #00509e;
-            /* Azul más oscuro */
-        }
-
-        .nav-toggle {
-            display: none;
-            /* Mostrar solo en dispositivos móviles */
-            background: none;
-            border: none;
-            cursor: pointer;
-        }
-
-        .nav-toggle-icon {
-            width: 24px;
-            height: 24px;
-        }
-
-        /* Estilos específicos para las cajas de texto de promedio y calificación final */
-        .transparent-input {
-            background-color: transparent;
-            border: none;
-        }
-
-        /* Estilo para celdas con valor "N/A" */
-        .na-cell {
-            background-color: #f9ff33;
-            /* Color de fondo para celdas con "N/A" */
-        }
-    </style>
+    <link rel="stylesheet" href="../assets/css/procesar_grupo.css" type="text/css">
 </head>
 
 <body>
@@ -625,8 +384,8 @@ if ($total_alumnos > 0) {
 
         // Inicializar variables para cálculos
         $total_alumnos = mysqli_num_rows($resultado_alumnos);
-        $totales = array_fill_keys(['parcial_1', 'parcial_2', 'parcial_3', 'calificacion_final', 'segunda_oportunidad'], ['reprobados' => 0, 'aprobados' => 0]);
-        $creditos_por_parcial = array_fill_keys(['parcial_1', 'parcial_2', 'parcial_3', 'calificacion_final'], ['reprobados' => 0, 'aprobados' => 0]);
+        $totales = array_fill_keys(['parcial_1', 'parcial_2', 'parcial_3', 'promedio', 'calificacion_final', 'segunda_oportunidad'], ['reprobados' => 0, 'aprobados' => 0]);
+        $creditos_por_parcial = array_fill_keys(['parcial_1', 'parcial_2', 'parcial_3', 'promedio', 'calificacion_final', 'segunda_oportunidad'], ['reprobados' => 0, 'aprobados' => 0]);
 
         // Volver a la consulta inicial para recalcular totales
         $resultado_alumnos = mysqli_query($conexion, $consulta_alumnos);
@@ -643,34 +402,48 @@ if ($total_alumnos > 0) {
             $materias_result = mysqli_query($conexion, $materias_query);
             $creditos_materias = [];
             while ($materia = mysqli_fetch_assoc($materias_result)) {
-                $creditos_materias[$materia['id_materia']] = $materia['creditos'];
+            $creditos_materias[$materia['id_materia']] = $materia['creditos'];
             }
 
             foreach (['parcial_1', 'parcial_2', 'parcial_3'] as $parcial) {
-                if ($alumno[$parcial] === 'N/A' || $alumno[$parcial] < 70) {
-                    $totales[$parcial]['reprobados']++;
-                    $creditos_por_parcial[$parcial]['reprobados'] += $creditos_materias[$id_materia] ?? 0;
-                } else {
-                    $totales[$parcial]['aprobados']++;
-                    $creditos_por_parcial[$parcial]['aprobados'] += $creditos_materias[$id_materia] ?? 0;
-                }
+            if ($alumno[$parcial] === 'N/A' || $alumno[$parcial] < 70) {
+            $totales[$parcial]['reprobados']++;
+            $creditos_por_parcial[$parcial]['reprobados'] += $creditos_materias[$id_materia] ?? 0;
+            } else {
+            $totales[$parcial]['aprobados']++;
+            $creditos_por_parcial[$parcial]['aprobados'] += $creditos_materias[$id_materia] ?? 0;
+            }
             }
 
             // Procesar segunda oportunidad
             if ($alumno['segunda_oportunidad'] !== '') {
-                $alumnos_segunda_oportunidad++; // Incrementar contador de alumnos en segunda oportunidad
-                if ($alumno['segunda_oportunidad'] < 70 || $alumno['segunda_oportunidad'] === 'N/A') {
-                    $totales['segunda_oportunidad']['reprobados']++;
-                } else {
-                    $totales['segunda_oportunidad']['aprobados']++;
-                }
+            $alumnos_segunda_oportunidad++; // Incrementar contador de alumnos en segunda oportunidad
+            if ($alumno['segunda_oportunidad'] < 70 || $alumno['segunda_oportunidad'] === 'N/A') {
+            $totales['segunda_oportunidad']['reprobados']++;
+            $creditos_por_parcial['segunda_oportunidad']['reprobados'] += $creditos_materias[$id_materia] ?? 0;
+            } else {
+            $totales['segunda_oportunidad']['aprobados']++;
+            $creditos_por_parcial['segunda_oportunidad']['aprobados'] += $creditos_materias[$id_materia] ?? 0;
+            }
             }
 
             // Procesar calificación final
             if ($calif_final === 'N/A' || $calif_final < 70) {
-                $totales['calificacion_final']['reprobados']++;
+            $totales['calificacion_final']['reprobados']++;
+            $creditos_por_parcial['calificacion_final']['reprobados'] += $creditos_materias[$id_materia] ?? 0;
             } else {
-                $totales['calificacion_final']['aprobados']++;
+            $totales['calificacion_final']['aprobados']++;
+            $creditos_por_parcial['calificacion_final']['aprobados'] += $creditos_materias[$id_materia] ?? 0;
+            }
+
+            // Procesar promedio
+            $promedio = isset($alumno['promedio']) ? $alumno['promedio'] : 'N/A';
+            if ($promedio === 'N/A' || $promedio < 70) {
+            $totales['promedio']['reprobados']++;
+            $creditos_por_parcial['promedio']['reprobados'] += $creditos_materias[$id_materia] ?? 0;
+            } else {
+            $totales['promedio']['aprobados']++;
+            $creditos_por_parcial['promedio']['aprobados'] += $creditos_materias[$id_materia] ?? 0;
             }
         }
 
@@ -679,11 +452,11 @@ if ($total_alumnos > 0) {
         $porcentaje_aprobados = [];
         foreach ($totales as $tipo => $data) {
             if ($tipo === 'segunda_oportunidad') {
-                $porcentaje_reprobados[$tipo] = $alumnos_segunda_oportunidad > 0 ? ($data['reprobados'] / $alumnos_segunda_oportunidad) * 100 : 0;
-                $porcentaje_aprobados[$tipo] = $alumnos_segunda_oportunidad > 0 ? ($data['aprobados'] / $alumnos_segunda_oportunidad) * 100 : 0;
+            $porcentaje_reprobados[$tipo] = $alumnos_segunda_oportunidad > 0 ? ($data['reprobados'] / $alumnos_segunda_oportunidad) * 100 : 0;
+            $porcentaje_aprobados[$tipo] = $alumnos_segunda_oportunidad > 0 ? ($data['aprobados'] / $alumnos_segunda_oportunidad) * 100 : 0;
             } else {
-                $porcentaje_reprobados[$tipo] = $total_alumnos > 0 ? ($data['reprobados'] / $total_alumnos) * 100 : 0;
-                $porcentaje_aprobados[$tipo] = $total_alumnos > 0 ? ($data['aprobados'] / $total_alumnos) * 100 : 0;
+            $porcentaje_reprobados[$tipo] = $total_alumnos > 0 ? ($data['reprobados'] / $total_alumnos) * 100 : 0;
+            $porcentaje_aprobados[$tipo] = $total_alumnos > 0 ? ($data['aprobados'] / $total_alumnos) * 100 : 0;
             }
         }
 
@@ -692,16 +465,15 @@ if ($total_alumnos > 0) {
 
         // Generar la tabla
         echo '<table border="1">';
-        echo '<thead><tr><th>Parcial</th><th>No Acreditados</th><th>Porcentaje No Acreditados</th><th>Acreditados</th><th>Porcentaje Acreditados</th><th>Total</th></tr></thead>';
+        echo '<thead><tr><th>Parcial</th><th>Acreditados</th><th>No Acreditados</th><th>Porcentaje No Acreditados</th><th>Porcentaje Acreditados</th><th>Total</th></tr></thead>';
         echo '<tbody>';
 
-        // Reordenar los elementos para que "promedio" aparezca después de "segunda_oportunidad"
-        foreach (['parcial_1', 'parcial_2', 'parcial_3', 'segunda_oportunidad', 'calificacion_final'] as $tipo) {
+        foreach (['parcial_1', 'parcial_2', 'parcial_3', 'promedio', 'segunda_oportunidad', 'calificacion_final'] as $tipo) {
             echo '<tr>';
             echo '<td>' . ucwords(str_replace('_', ' ', $tipo)) . '</td>';
+            echo '<td>' . (isset($totales[$tipo]['aprobados']) ? $totales[$tipo]['aprobados'] : 0) . '</td>';
             echo '<td>' . (isset($totales[$tipo]['reprobados']) ? $totales[$tipo]['reprobados'] : 0) . '</td>';
             echo '<td>' . (floor($porcentaje_reprobados[$tipo]) == $porcentaje_reprobados[$tipo] ? $porcentaje_reprobados[$tipo] : number_format($porcentaje_reprobados[$tipo], 2)) . '%</td>'; // Mostrar decimales solo si es necesario
-            echo '<td>' . (isset($totales[$tipo]['aprobados']) ? $totales[$tipo]['aprobados'] : 0) . '</td>';
             echo '<td>' . (floor($porcentaje_aprobados[$tipo]) == $porcentaje_aprobados[$tipo] ? $porcentaje_aprobados[$tipo] : number_format($porcentaje_aprobados[$tipo], 2)) . '%</td>'; // Mostrar decimales solo si es necesario
             echo '<td>' . ($tipo === 'segunda_oportunidad' ? $alumnos_segunda_oportunidad : $total_alumnos) . '</td>'; // Mostrar el total de alumnos
             echo '</tr>';
@@ -713,21 +485,27 @@ if ($total_alumnos > 0) {
         // Mostrar tabla de Créditos
         echo '<h2>Indicador de Acreditacion de Creditos del Grupo ' . htmlspecialchars($nombre_grupo) . ' de la Materia ' . htmlspecialchars($nombre_materia) . '</h2>';
         echo '<table border="1">';
-        echo '<thead><tr><th>Parcial</th><th>Créditos Acreditados</th><th>Créditos No Acreditados</th></tr></thead>';
+        echo '<thead><tr><th>Parcial</th><th>Créditos Acreditados</th><th>Créditos No Acreditados</th><th>Porcentaje No Acreditados</th><th>Porcentaje Acreditados</th><th>Total</th></tr></thead>';
         echo '<tbody>';
-        foreach (['parcial_1', 'parcial_2', 'parcial_3'] as $tipo) {
+        foreach (['parcial_1', 'parcial_2', 'parcial_3', 'promedio', 'segunda_oportunidad', 'calificacion_final'] as $tipo) {
+            $total_creditos = $creditos_por_parcial[$tipo]['aprobados'] + $creditos_por_parcial[$tipo]['reprobados'];
+            $porcentaje_creditos_reprobados = $total_creditos > 0 ? ($creditos_por_parcial[$tipo]['reprobados'] / $total_creditos) * 100 : 0;
+            $porcentaje_creditos_aprobados = $total_creditos > 0 ? ($creditos_por_parcial[$tipo]['aprobados'] / $total_creditos) * 100 : 0;
+
             echo '<tr>';
             echo '<td>' . ucwords(str_replace('_', ' ', $tipo)) . '</td>';
             echo '<td>' . (isset($creditos_por_parcial[$tipo]['aprobados']) ? $creditos_por_parcial[$tipo]['aprobados'] : 0) . '</td>';
             echo '<td>' . (isset($creditos_por_parcial[$tipo]['reprobados']) ? $creditos_por_parcial[$tipo]['reprobados'] : 0) . '</td>';
-
+            echo '<td>' . (floor($porcentaje_creditos_reprobados) == $porcentaje_creditos_reprobados ? $porcentaje_creditos_reprobados : number_format($porcentaje_creditos_reprobados, 2)) . '%</td>'; // Mostrar decimales solo si es necesario
+            echo '<td>' . (floor($porcentaje_creditos_aprobados) == $porcentaje_creditos_aprobados ? $porcentaje_creditos_aprobados : number_format($porcentaje_creditos_aprobados, 2)) . '%</td>'; // Mostrar decimales solo si es necesario
+            echo '<td>' . $total_creditos . '</td>'; // Mostrar el total de créditos
             echo '</tr>';
         }
         echo '</tbody>';
         echo '</table>';
-    } else {
+        } else {
         echo 'No hay alumnos para mostrar.';
-    }
+        }
 
     mysqli_close($conexion);
     ?>
