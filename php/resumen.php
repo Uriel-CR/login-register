@@ -102,10 +102,6 @@
         <h2>Resumen Por Materia</h2>
         <button onclick="window.location.href='resumen_materia.php'" class="custom-button">INGRESAR</button>
     </div>
-    <div class="button-container">
-        <h2>Despues de Segunda Oportunidad</h2>
-        <button onclick="window.location.href='despues_segunda.php'" class="custom-button">INGRESAR</button>
-    </div>
     
 </body>
 </html>
