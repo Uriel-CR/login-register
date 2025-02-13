@@ -1,4 +1,5 @@
 <?php
+require 'verificar_sesion.php';
 // Conexión a la base de datos
 $servername = "localhost"; // Cambia esto por tu servidor de base de datos
 $username = "serviciosocial"; // Cambia esto por tu nombre de usuario de la base de datos
@@ -258,22 +259,8 @@ $conn->close();
     </style>
 </head>
 <body>
-    <header class="header">
-        <nav class="nav">
-            <a href="#" class="logo nav-link">TESI</a>
-            <ul class="nav-menu">
-                <li class="nav-menu-item"><a class="nav-menu-link" href="../php/bienvenida.php">Inicio</a></li>
-                <li class="nav-menu-item"><a class="nav-menu-link" href="../php/alumnos.php">Alumnos</a></li>
-                <li class="nav-menu-item"><a class="nav-menu-link" href="../php/materias.php">Materias</a></li>
-                <li class="nav-menu-item"><a class="nav-menu-link" href="../php/grupos.php">Grupos</a></li>
-                <li class="nav-menu-item"><a class="nav-menu-link selected">Profesores</a></li>
-                <li class="nav-menu-item"><a class="nav-menu-link" href="../php/periodo.php">Periodo</a></li>
-                <li class="nav-menu-item"><a class="nav-menu-link" href="../php/asignacion_grupo.php">Calificaciones</a></li>
-                <li class="nav-menu-item"><a class="nav-menu-link" href="../php/resumen.php">Resumen</a></li>
-                <li class="nav-menu-item"><a class="nav-menu-link" href="../index.php">Cerrar Sesión</a></li>
-            </ul>
-        </nav>
-    </header>
+    
+<?php include 'header.html'; ?>
 
     <div class="container">
         <h1>Registro de Profesores y Turnos</h1>

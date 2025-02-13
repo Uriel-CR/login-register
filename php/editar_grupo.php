@@ -1,4 +1,5 @@
 <?php
+require 'verificar_sesion.php';
 include 'conexion_be.php';
 
 // Verificar si se ha enviado un ID de grupo
@@ -213,22 +214,9 @@ mysqli_close($conexion);
     </style>
 </head>
 <body>
-<header class="header">
-    <nav class="nav">
-        <a class="logo nav-link"> TESI </a>
-        <ul class="nav-menu">
-            <li class="nav-menu-item"><a class="nav-menu-link" href="../php/bienvenida.php">Inicio</a></li>
-            <li class="nav-menu-item"><a class="nav-menu-link" href="../php/alumnos.php">Alumnos</a></li>
-            <li class="nav-menu-item"><a class="nav-menu-link" href="../php/materias.php">Materias</a></li>
-            <li class="nav-menu-item"><a class="nav-menu-link selected">Grupos</a></li>
-            <li class="nav-menu-item"><a class="nav-menu-link" href="../php/profesores.php">Profesores</a></li>
-            <li class="nav-menu-item"><a class="nav-menu-link" href="../php/periodo.php">Periodo</a></li>
-            <li class="nav-menu-item"><a class="nav-menu-link" href="../php/asignacion_grupo.php">Calificaciones</a></li>
-            <li class="nav-menu-item"><a class="nav-menu-link" href="../php/resumen.php">Resumen</a></li>
-            <li class="nav-menu-item"><a class="nav-menu-link" href="../index.php">Cerrar Sesión</a></li>
-        </ul>
-    </nav>
-</header>
+<?php
+include 'header.html';
+?>
 
 <h1>Editar Materias para el Grupo</h1>
 
@@ -252,10 +240,15 @@ mysqli_close($conexion);
                 echo "<tr>
                         <th>Materia $i</th>
                         <td>
+                            <label>Nombre:</label>
                             <input type='text' name='materia$i' value='" . htmlspecialchars($materia_nombre) . "' " . ($materia_id ? "" : "disabled") . ">
+                            <label>Clave:</label>
                             <input type='text' name='clave_materia$i' value='" . htmlspecialchars($clave_materia) . "' placeholder='Clave'>
+                            <label>Horas Teóricas:</label>
                             <input type='number' name='hrs_teoricas$i' value='" . htmlspecialchars($hrs_teoricas) . "' placeholder='Horas Teóricas'>
+                            <label>Horas Prácticas:</label>
                             <input type='number' name='hrs_practicas$i' value='" . htmlspecialchars($hrs_practicas) . "' placeholder='Horas Prácticas'>
+                            <label>Créditos:</label>
                             <input type='number' name='creditos$i' value='" . htmlspecialchars($creditos_calculados) . "' placeholder='Créditos'>
                         </td>
                       </tr>";

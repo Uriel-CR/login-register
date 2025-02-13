@@ -10,26 +10,9 @@
 </head>
 
 <body>
-    <header class="header">
-        <nav class="nav">
-            <a class="logo nav-link">TESI</a>
-            <ul class="nav-menu">
-                <li class="nav-menu-item"><a class="nav-menu-link" href="../php/bienvenida.php">Inicio</a></li>
-                <li class="nav-menu-item"><a class="nav-menu-link " href="../php/alumnos.php">Alumnos</a></li>
-                <li class="nav-menu-item"><a class="nav-menu-link" href="../php/materias.php">Materias</a></li>
-                <li class="nav-menu-item"><a class="nav-menu-link" href="../php/grupos.php">Grupos</a></li>
-                <li class="nav-menu-item"><a class="nav-menu-link" href="../php/profesores.php">Profesores</a></li>
-                <li class="nav-menu-item"><a class="nav-menu-link" href="../php/periodo.php">Periodo</a></li>
-                <li class="nav-menu-item"><a class="nav-menu-link" href="../php/asignacion_grupo.php">Calificaciones</a></li>
-                <li class="nav-menu-item"><a class="nav-menu-link selected" href="../php/resumen.php">Resumen</a></li>
-                <li class="nav-menu-item"><a class="nav-menu-link" href="../index.php">Cerrar Sesión</a></li>
-            </ul>
-            <button class="nav-toggle">
-                <img src="../assets/images/menu.svg" class="nav-toggle-icon" alt="Menú">
-            </button>
-        </nav>
-    </header>
     <?php
+    require 'verificar_sesion.php';
+    include 'header.html';
     // Configuración de la base de datos
     $servername = "localhost";
     $username = "serviciosocial";
@@ -92,9 +75,13 @@
     // Ejecutar la consulta para obtener los periodos
     $result_periodos = $conn->query($sql_periodos);
     $periodos = [];
+    $periodo_seleccionado = null;
     if ($result_periodos->num_rows > 0) {
         while ($row = $result_periodos->fetch_assoc()) {
             $periodos[] = $row;
+            if ($row['id_periodo'] == $periodo) {
+                $periodo_seleccionado = $row['periodo'];
+            }
         }
     }
 
@@ -278,7 +265,14 @@
     echo '<td>' . $totales['creditos_reprobados'] . '</td>';
     echo '<td>' . ($totales['total_creditos'] > 0 ? round(($totales['creditos_aprobados'] / $totales['total_creditos']) * 100, 2) . '%' : '0%') . '</td>';
     echo '<td>' . ($totales['total_creditos'] > 0 ? round(($totales['creditos_reprobados'] / $totales['total_creditos']) * 100, 2) . '%' : '0%') . '</td>';
-    echo '<td><a href="otro_archivo.php?id_grupo=' . urlencode($id_grupo) . '&periodo=' . urlencode($periodo) . '&parcial=' . urlencode($parcial) . '" class="button">Ver Gráfica</a></td>';
+    echo '<td><a href="otro_archivo.php?
+    alumnos_aprobados=' . urlencode(($totales['alumnos_aprobados'] / $totales['total_alumnos']) * 100) . 
+    '&alumnos_reprobados=' . urlencode(($totales['alumnos_reprobados'] / $totales['total_alumnos']) * 100) . 
+    '&materias_aprobadas=' . urlencode(($totales['materias_aprobadas'] / ($totales['materias_aprobadas'] + $totales['materias_reprobadas'])) * 100) . 
+    '&materias_reprobadas=' . urlencode(($totales['materias_reprobadas'] / ($totales['materias_aprobadas'] + $totales['materias_reprobadas'])) * 100) . 
+    '&periodo=' . urlencode($periodo_seleccionado) . 
+    '&parcial=' . urlencode($parcial) .'
+    " class="button">Ver Gráfica</a></td>';
     echo '</tr>';
 
     echo '</table>';

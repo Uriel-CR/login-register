@@ -1,101 +1,21 @@
 <?php
-// Configuración de la base de datos
-$servername = "localhost";
-$username = "serviciosocial";
-$password = "FtW30yNo8hQd-x/G";
-$dbname = "login_register_db";
-
-// Crear conexión
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-// Comprobar la conexión
-if ($conn->connect_error) {
-    die("Conexión fallida: " . $conn->connect_error);
-}
 
 // Obtener el periodo y el parcial seleccionados
-$periodo = isset($_GET['periodo']) ? intval($_GET['periodo']) : 1;
+$periodo = isset($_GET['periodo']) ? $_GET['periodo'] : '1';
 $parcial = isset($_GET['parcial']) ? intval($_GET['parcial']) : 1;
 
-// Consultas SQL para sumar totales y contar el total de alumnos
-$sql_totales = "
-    SELECT
-        SUM(CASE WHEN CAST(pg.Promedio_parcial{$parcial} AS DECIMAL) >= 70 THEN 1 ELSE 0 END) AS total_aprobados,
-        SUM(CASE WHEN pg.Promedio_parcial{$parcial} = 'N/A' THEN 1 ELSE 0 END) AS total_reprobados,
-        COUNT(*) AS total_alumnos
-    FROM promedios_generales pg
-    WHERE pg.id_periodo = ?";
-
-$stmt_totales = $conn->prepare($sql_totales);
-$stmt_totales->bind_param("i", $periodo);
-$stmt_totales->execute();
-$result_totales = $stmt_totales->get_result();
-
-$total_aprobados = 0;
-$total_reprobados = 0;
-$total_alumnos = 0;
-
-// Procesar resultados
-if ($row = $result_totales->fetch_assoc()) {
-    $total_aprobados = $row['total_aprobados'];
-    $total_reprobados = $row['total_reprobados'];
-    $total_alumnos = $row['total_alumnos'];
-}
-
-// Calcular porcentajes
-$porcentaje_aprobados = $total_alumnos > 0 ? ($total_aprobados / $total_alumnos) * 100 : 0;
-$porcentaje_reprobados = $total_alumnos > 0 ? ($total_reprobados / $total_alumnos) * 100 : 0;
+// Obtener los porcentajes de aprobados y reprobados
+$alumnos_aprobados = isset($_GET['alumnos_aprobados']) ? floatval($_GET['alumnos_aprobados']) : 1.0;
+$alumnos_reprobados = isset($_GET['alumnos_reprobados']) ? floatval($_GET['alumnos_reprobados']) : 1.0;
+$materias_aprobadas = isset($_GET['materias_aprobadas']) ? floatval($_GET['materias_aprobadas']) : 1.0;
+$materias_reprobadas = isset($_GET['materias_reprobadas']) ? floatval($_GET['materias_reprobadas']) : 1.0;
 
 // Convertir los datos a formato JSON para usarlos en JavaScript
-$porcentaje_aprobados_json = json_encode($porcentaje_aprobados);
-$porcentaje_reprobados_json = json_encode($porcentaje_reprobados);
+$porcentaje_aprobados_json = json_encode($alumnos_aprobados);
+$porcentaje_reprobados_json = json_encode($alumnos_reprobados);
 
-// Consultas SQL para obtener el total de materias aprobadas y reprobadas
-$sql_total_aprobadas = "
-    SELECT SUM(CASE WHEN ? = 1 THEN parcial_1_aprobados 
-                    WHEN ? = 2 THEN parcial_2_aprobados 
-                    WHEN ? = 3 THEN parcial_3_aprobados 
-                    ELSE 0 END) AS total_aprobadas
-    FROM calificaciones_resumen
-    WHERE id_periodo = ?";
-
-$sql_total_reprobadas = "
-    SELECT SUM(CASE WHEN ? = 1 THEN parcial_1_reprobados 
-                    WHEN ? = 2 THEN parcial_2_reprobados 
-                    WHEN ? = 3 THEN parcial_3_reprobados 
-                    ELSE 0 END) AS total_reprobadas
-    FROM calificaciones_resumen
-    WHERE id_periodo = ?";
-
-// Preparar y ejecutar consultas
-$stmt_total_aprobadas = $conn->prepare($sql_total_aprobadas);
-$stmt_total_aprobadas->bind_param("iiii", $parcial, $parcial, $parcial, $periodo);
-$stmt_total_aprobadas->execute();
-$result_total_aprobadas = $stmt_total_aprobadas->get_result()->fetch_assoc();
-
-$stmt_total_reprobadas = $conn->prepare($sql_total_reprobadas);
-$stmt_total_reprobadas->bind_param("iiii", $parcial, $parcial, $parcial, $periodo);
-$stmt_total_reprobadas->execute();
-$result_total_reprobadas = $stmt_total_reprobadas->get_result()->fetch_assoc();
-
-// Obtener los totales
-$total_aprobadas = $result_total_aprobadas['total_aprobadas'];
-$total_reprobadas = $result_total_reprobadas['total_reprobadas'];
-
-// Calcular el total general
-$total_materias = $total_aprobadas + $total_reprobadas;
-
-// Calcular porcentajes
-$porcentaje_aprobadas = ($total_materias > 0) ? ($total_aprobadas / $total_materias) * 100 : 0;
-$porcentaje_reprobadas = ($total_materias > 0) ? ($total_reprobadas / $total_materias) * 100 : 0;
-
-// Convertir los datos a formato JSON para usarlos en JavaScript
-$porcentaje_aprobadas_json = json_encode($porcentaje_aprobadas);
-$porcentaje_reprobadas_json = json_encode($porcentaje_reprobadas);
-
-$stmt_total_aprobadas->close();
-$stmt_total_reprobadas->close();
-$conn->close();
+$porcentaje_aprobadas_json = json_encode($materias_aprobadas);
+$porcentaje_reprobadas_json = json_encode($materias_reprobadas);
 ?>
 
 <!DOCTYPE html>

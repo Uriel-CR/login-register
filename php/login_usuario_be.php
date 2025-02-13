@@ -1,5 +1,5 @@
 <?php 
-
+session_start();
 include 'conexion_be.php';
 
 $correo = $_POST['correo'];

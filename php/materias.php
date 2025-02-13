@@ -1,5 +1,9 @@
+<?php
+require 'verificar_sesion.php';
+?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -24,7 +28,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             position: sticky;
             /* Hace que el encabezado se quede fijo en la parte superior */
             top: 0;
@@ -36,7 +40,7 @@
         }
 
         .logo {
-            
+
             font-size: 24px;
             font-weight: bold;
             position: fixed;
@@ -72,12 +76,14 @@
             transition: background-color 0.3s ease;
         }
 
-        .nav-menu-link:hover, .nav-menu-link.selected {
+        .nav-menu-link:hover,
+        .nav-menu-link.selected {
             background-color: #0056b3;
         }
 
         .nav-toggle {
-            display: none; /* Mostrar solo en dispositivos móviles */
+            display: none;
+            /* Mostrar solo en dispositivos móviles */
             background: none;
             border: none;
             cursor: pointer;
@@ -117,10 +123,12 @@
             width: 100%;
             margin: 20px auto;
             border-collapse: collapse;
-            max-width: 800px; /* Reducir el ancho de la tabla */
+            max-width: 800px;
+            /* Reducir el ancho de la tabla */
         }
 
-        th, td {
+        th,
+        td {
             padding: 8px;
             border: 1px solid #ddd;
         }
@@ -143,11 +151,14 @@
             width: 100%;
             margin: 20px auto;
             border-collapse: collapse;
-            display: none; /* Ocultar la tabla por defecto */
-            max-width: 800px; /* Reducir el ancho de la tabla */
+            display: none;
+            /* Ocultar la tabla por defecto */
+            max-width: 800px;
+            /* Reducir el ancho de la tabla */
         }
 
-        .data-table th, .data-table td {
+        .data-table th,
+        .data-table td {
             padding: 8px;
             border: 1px solid #ddd;
         }
@@ -164,30 +175,14 @@
         .search-container input {
             padding: 8px;
             font-size: 16px;
-            width: 300px; /* Ajustar el ancho de la barra de búsqueda */
+            width: 300px;
+            /* Ajustar el ancho de la barra de búsqueda */
         }
     </style>
 </head>
+
 <body>
-    <header class="header">
-        <nav class="nav">
-            <a class="logo nav-link">TESI</a>
-            <ul class="nav-menu">
-                <li class="nav-menu-item"><a class="nav-menu-link" href="../php/bienvenida.php">Inicio</a></li>
-                <li class="nav-menu-item"><a class="nav-menu-link" href="../php/alumnos.php">Alumnos</a></li>
-                <li class="nav-menu-item"><a class="nav-menu-link selected">Materias</a></li>
-                <li class="nav-menu-item"><a class="nav-menu-link" href="../php/grupos.php">Grupos</a></li>
-                <li class="nav-menu-item"><a class="nav-menu-link" href="../php/profesores.php">Profesores</a></li>
-                <li class="nav-menu-item"><a class="nav-menu-link" href="../php/periodo.php">Periodo</a></li>
-                <li class="nav-menu-item"><a class="nav-menu-link" href="../php/asignacion_grupo.php">Calificaciones</a></li>
-                <li class="nav-menu-item"><a class="nav-menu-link" href="../php/resumen.php">Resumen</a></li>
-                <li class="nav-menu-item"><a class="nav-menu-link" href="../index.php">Cerrar Sesión</a></li>
-            </ul>
-            <button class="nav-toggle">
-                <img src="../assets/images/menu.svg" class="nav-toggle-icon" alt="Menu">
-            </button>
-        </nav>
-    </header>
+    <?php include 'header.html'; ?>
 
     <h1>Registro de Materias</h1>
 
@@ -290,22 +285,23 @@
 
             const formData = new FormData(this);
             fetch('procesar_materia.php', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.text())
-            .then(result => {
-                // Aquí puedes manejar la respuesta del servidor
-                console.log(result);
-                alert('Materia guardada correctamente');
-                // Opcionalmente, puedes limpiar el formulario o hacer otras acciones
-                document.getElementById('materiaForm').reset();
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('Ocurrió un error al guardar la materia');
-            });
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.text())
+                .then(result => {
+                    // Aquí puedes manejar la respuesta del servidor
+                    console.log(result);
+                    alert('Materia guardada correctamente');
+                    // Opcionalmente, puedes limpiar el formulario o hacer otras acciones
+                    document.getElementById('materiaForm').reset();
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Ocurrió un error al guardar la materia');
+                });
         });
     </script>
 </body>
+
 </html>
