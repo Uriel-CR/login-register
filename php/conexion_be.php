@@ -1,6 +1,6 @@
 <?php 
 
-$conexion = mysqli_connect("localhost", "serviciosocial", "FtW30yNo8hQd-x/G","login_register_db");
+$conexion = mysqli_connect("localhost", "serviciosocial", "FtW30yNo8hQd-x/G","nuevo_sistema");
 
 if (!$conexion) {
     error_log("Error de conexión a la base de datos: " . mysqli_connect_error());
