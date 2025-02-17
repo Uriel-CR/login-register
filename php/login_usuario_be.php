@@ -4,11 +4,12 @@ include 'conexion_be.php';
 
 $correo = $_POST['correo'];
 $contrasena = $_POST['contrasena'];
+$tipo = $_POST['tipo'];
 
-
+echo($tipo);
 
 // validar que los datos sean iguales 
-$validar_login = mysqli_query($conexion, "SELECT * FROM users WHERE email= '$correo' and password='$contrasena'" );
+$validar_login = mysqli_query($conexion, "SELECT * FROM users WHERE email= '$correo' AND password='$contrasena' AND user_type_id = $tipo");
 
 if(mysqli_num_rows($validar_login)> 0 ){
 
