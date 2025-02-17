@@ -218,6 +218,7 @@
                 <option value="2">Parcial 2</option>
                 <option value="3">Parcial 3</option>
                 <option value="2o">Segunda Oportunidad</option>
+                <option value="D2o">Despues de segunda oportunidad</option>
             </select>
             <div class="button-group">
                 <button type="submit" class="button">Mostrar Reporte</button>
@@ -256,6 +257,11 @@
                 $columna_reprobados = 'segunda_oportunidad_reprobados';
                 $columna_creditos_aprobados = 'creditos_aprobados_segunda_oportunidad';
                 $columna_creditos_reprobados = 'creditos_reprobados_segunda_oportunidad';
+            }elseif ($parcial == 'D2o'){
+                $columna_aprobados = 'calif_final_aprobados';
+                $columna_reprobados = 'calif_final_reprobados';
+                $columna_creditos_aprobados = 'creditos_aprobados_calif_final';
+                $columna_creditos_reprobados = 'creditos_reprobados_calif_final';
             } else {
                 $columna_aprobados = "parcial_{$parcial}_aprobados";
                 $columna_reprobados = "parcial_{$parcial}_reprobados";
@@ -362,11 +368,7 @@
                 $total_porcentaje_materias_reprobadas = ($total_creditos > 0) ? ($total_materias_reprobadas / $total_creditos) * 100 : 0;
 
                 echo "<tr class='total-row'>
-                        <td>Total</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td colspan='5'>Total</td>
                         <td>" . $total_alumnos . "</td>
                         <td>" . $total_aprobados . "</td>
                         <td>" . $total_reprobados . "</td>

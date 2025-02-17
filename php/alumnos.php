@@ -2,9 +2,9 @@
 require 'verificar_sesion.php';
 // Configuración de la base de datos
 $servername = "localhost";
-$username = "serviciosocial";
-$password = "FtW30yNo8hQd-x/G";
-$dbname = "login_register_db";
+$username = "root";
+$password = "alociva07.PM";
+$dbname = "login-register-new";
 
 // Crear conexión
 $conn = new mysqli($servername, $username, $password, $dbname);
