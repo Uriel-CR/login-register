@@ -1,8 +1,7 @@
 <?php
-include 'conexion_be.php';
-
 // Verificar si el formulario ha sido enviado
 if (isset($_POST['register'])) {
+    // Obtener los valores del formulario
     $nombre_grupo = $_POST['nombre_grupo'];
     $materias = [
         $_POST['materia1'],
@@ -12,19 +11,44 @@ if (isset($_POST['register'])) {
         $_POST['materia5'],
         $_POST['materia6']
     ];
+    $profesor_id = $_POST['profesor'];
+    $periodo_id = $_POST['periodo'];
+    $salon_id = $_POST['salon'];
 
-    // Insertar el grupo en la base de datos
-    $insertar_grupo = "INSERT INTO grupos (nombre_grupo, id_materia1, id_materia2, id_materia3, id_materia4, id_materia5, id_materia6) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    // Validaciones (como ya lo tenías)
+    if (!isset($nombre_grupo) || !preg_match('/^\d{4}$/', $nombre_grupo)) {
+        die("Error: El número de grupo debe ser un entero de 4 dígitos.");
+    }
+    $d1 = substr($nombre_grupo, 0, 1);
+    $d2 = substr($nombre_grupo, 1, 1);
+    $d3 = substr($nombre_grupo, 2, 1);
+    $d4 = substr($nombre_grupo, 3, 1);
+
+    // Consultas para obtener ids de carrera, semestre, turno
+
+    // Insertar el grupo
+    $insertar_grupo = "INSERT INTO grupos (id_carrera, id_semestre, id_turno, clave_grupo, id_profesor, id_periodos, id_salones) 
+                        VALUES (?, ?, ?, ?, ?, ?, ?)";
     $stmt = mysqli_prepare($conexion, $insertar_grupo);
-
-    // Asegurarse de que todos los campos de materias están definidos
-    $materias = array_pad($materias, 6, null); // Asegurarse de tener 6 valores (null si no hay selección)
-    mysqli_stmt_bind_param($stmt, "siiiiii", $nombre_grupo, $materias[0], $materias[1], $materias[2], $materias[3], $materias[4], $materias[5]);
+    mysqli_stmt_bind_param($stmt, "iiiiiii", $id_carrera, $id_semestre, $id_turno, $d4, $profesor_id, $periodo_id, $salon_id);
 
     if (mysqli_stmt_execute($stmt)) {
-        echo'
+        $id_grupo = mysqli_insert_id($conexion);
+
+        // Insertar las materias
+        foreach ($materias as $materia) {
+            if (!empty($materia)) {
+                $insertar_materia = "INSERT INTO grupo_materia (id_grupo, id_materia) VALUES (?, ?)";
+                $stmt_materia = mysqli_prepare($conexion, $insertar_materia);
+                mysqli_stmt_bind_param($stmt_materia, "ii", $id_grupo, $materia);
+                mysqli_stmt_execute($stmt_materia);
+                mysqli_stmt_close($stmt_materia);
+            }
+        }
+
+        echo '
         <script>
-        alert("Grupo registrado correctamente");
+        alert("Grupo y materias registrados correctamente");
         window.location= "grupos.php";
         </script>
         ';
@@ -35,6 +59,5 @@ if (isset($_POST['register'])) {
     mysqli_stmt_close($stmt);
 }
 
-// Cerrar la conexión a la base de datos
+// Cerrar la conexión
 mysqli_close($conexion);
-?>
