@@ -7,20 +7,20 @@ include 'conexion_be.php';
 if(isset($_POST['register'])){
     // Verifica que todos los campos del formulario hayan sido llenados
     if(
-        strlen($_POST['Clave']) >= 1 &&
-        strlen($_POST['Nombre_profesor']) >= 1 &&
+        strlen($_POST['clave']) >= 1 &&
+        strlen($_POST['nombre']) >= 1 &&
         strlen($_POST['ap_paterno']) >= 1 &&
         strlen($_POST['ap_materno']) >= 1
          ){
             // Obtiene y limpia los valores enviados por el formulario
-            $Clave = trim($_POST['Clave']);
-            $Nombre_profesor = trim($_POST['Nombre_profesor']);
+            $clave = trim($_POST['clave']);
+            $nombre = trim($_POST['nombre']);
             $ap_paterno = trim($_POST['ap_paterno']);
             $ap_materno = trim($_POST['ap_materno']);
             
             // Prepara la consulta SQL para insertar los datos en la tabla "profesores"
-            $consulta="INSERT INTO profesores(Clave,Nombre_profesor, ap_paterno, ap_materno) 
-            VALUES('$Clave','$Nombre_profesor','$ap_paterno','$ap_materno')";
+            $consulta="INSERT INTO profesores(clave, nombre, ap_paterno, ap_materno) 
+            VALUES('$clave','$nombre','$ap_paterno','$ap_materno')";
             
             // Ejecuta la consulta SQL
             $resultado = mysqli_query($conexion, $consulta);

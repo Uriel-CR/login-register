@@ -1,42 +1,32 @@
 <?php
-// Configuración de la base de datos
-$servername = "localhost";
-$username = "serviciosocial";
-$password = "FtW30yNo8hQd-x/G";
-$database = "login_register_db";
-
-// Crear conexión
-$conn = new mysqli($servername, $username, $password, $database);
+require 'verificar_sesion.php';
+require 'conexion_be.php';
 
 // Verificar conexión
-if ($conn->connect_error) {
-    die("Conexión fallida: " . $conn->connect_error);
+if ($conexion->connect_error) {
+    die("Conexión fallida: " . $conexion->connect_error);
 }
 
-// Recuperar id_turno del parámetro GET
-$id_turno = isset($_GET['id_turno']) ? intval($_GET['id_turno']) : 0;
+// Recuperar id_horario del parámetro GET
+$id_horario = isset($_GET['id_horario']) ? intval($_GET['id_horario']) : 0;
 
-// Consulta SQL para obtener los datos del turno
-$sql = "SELECT * FROM turnos WHERE id_turno = $id_turno";
-$result = $conn->query($sql);
+// Consulta para obtener datos del horario
+$sql = "SELECT * FROM horarios WHERE id_horario = ?";
+$stmt = $conexion->prepare($sql);
+$stmt->bind_param("i", $id_horario);
+$stmt->execute();
+$result = $stmt->get_result();
 $turno = $result->fetch_assoc();
 
 if (!$turno) {
-    die("Turno no encontrado.");
+    die("Horario no encontrado.");
 }
 
-// Obtener listas de materias, periodos, salones y profesores para el formulario
-$materias_sql = "SELECT id_materia, nombre FROM materias";
-$materias = $conn->query($materias_sql);
-
-$periodos_sql = "SELECT id_periodo, periodo FROM periodos";
-$periodos = $conn->query($periodos_sql);
-
-$salones_sql = "SELECT id_salon, salon FROM salones";
-$salones = $conn->query($salones_sql);
-
-$profesores_sql = "SELECT id_profesor, CONCAT(Nombre_profesor, ' ', ap_paterno, ' ', ap_materno) AS nombre_completo FROM profesores";
-$profesores = $conn->query($profesores_sql);
+// Obtener listas de materias, periodos, salones y profesores
+$materias = $conexion->query("SELECT id_materia, nombre FROM materias");
+$periodos = $conexion->query("SELECT id_periodo, periodo FROM periodos");
+$salones = $conexion->query("SELECT id_salon, clave_salon FROM salones");
+$profesores = $conexion->query("SELECT id_profesor, CONCAT(nombre, ' ', ap_paterno, ' ', ap_materno) AS nombre_completo FROM profesores");
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Recoger los datos del formulario
@@ -52,9 +42,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $nombre_profesor = $_POST['profesor'] ?? '';
 
     // Buscar el ID del profesor por nombre
-    $profesor_sql = "SELECT id_profesor FROM profesores WHERE CONCAT(Nombre_profesor, ' ', ap_paterno, ' ', ap_materno) = '$nombre_profesor'";
-    $profesor_result = $conn->query($profesor_sql);
-    
+    $profesor_sql = "SELECT id_profesor FROM profesores WHERE CONCAT(nombre, ' ', ap_paterno, ' ', ap_materno) = ?";
+    $stmt = $conexion->prepare($profesor_sql);
+    $stmt->bind_param("s", $nombre_profesor);
+    $stmt->execute();
+    $profesor_result = $stmt->get_result();
+
     if ($profesor_result->num_rows > 0) {
         $profesor = $profesor_result->fetch_assoc();
         $profesor_id = $profesor['id_profesor'];
@@ -62,22 +55,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         die("Profesor no encontrado.");
     }
 
-    // Actualizar el turno en la base de datos
-    $update_sql = "
-    UPDATE turnos
-    SET lunes = '$lunes', martes = '$martes', miercoles = '$miercoles', jueves = '$jueves', viernes = '$viernes', horas = '$horas', 
-        id_materias = '$materia_id', id_periodos = '$periodo_id', id_salones = '$salon_id', id_profesores = '$profesor_id'
-    WHERE id_turno = $id_turno";
+    // Actualizar el horario en la base de datos
+    $update_sql = "UPDATE horarios 
+                   SET lunes = ?, martes = ?, miercoles = ?, jueves = ?, viernes = ?, horas = ?, 
+                       id_materia = ?, id_periodo = ?, id_salon = ?, id_profesor = ? 
+                   WHERE id_horario = ?";
+    $stmt = $conexion->prepare($update_sql);
+    $stmt->bind_param("ssssssssssi", $lunes, $martes, $miercoles, $jueves, $viernes, $horas, 
+                                    $materia_id, $periodo_id, $salon_id, $profesor_id, $id_horario);
 
-    if ($conn->query($update_sql) === TRUE) {
+    if ($stmt->execute()) {
         echo "<p>Horarios actualizados exitosamente.</p>";
     } else {
-        echo "Error actualizando los horarios: " . $conn->error;
+        echo "Error actualizando los horarios: " . $conexion->error;
     }
 }
 
-$conn->close();
+$conexion->close();
 ?>
+
 
 <!DOCTYPE html>
 <html lang="es">

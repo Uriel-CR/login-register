@@ -243,51 +243,44 @@ require 'verificar_sesion.php';
         </div>
 
         <?php
-        // Configuración de la base de datos
-        $servername = "localhost";
-        $username = "serviciosocial";
-        $password = "FtW30yNo8hQd-x/G";
-        $database = "login_register_db";
-
-        // Crear conexión
-        $conn = new mysqli($servername, $username, $password, $database);
+        require 'conexion_be.php';
 
         // Verificar conexión
-        if ($conn->connect_error) {
-            die("Conexión fallida: " . $conn->connect_error);
+        if ($conexion->connect_error) {
+            die("Conexión fallida: " . $conexion->connect_error);
         }
 
         // Obtener el término de búsqueda
-        $search = isset($_GET['search']) ? $conn->real_escape_string($_GET['search']) : '';
+        $search = isset($_GET['search']) ? $conexion->real_escape_string($_GET['search']) : '';
 
         // Solo ejecutar la consulta si hay un término de búsqueda
         if (!empty($search)) {
             // Consulta SQL con filtro de búsqueda
-            $sql = "
-        SELECT
-            turnos.id_turno,
-            grupos.nombre_grupo,
-            materias.nombre AS nombre_materia,
-            CONCAT(profesores.Nombre_profesor, ' ', profesores.ap_paterno, ' ', profesores.ap_materno) AS nombre_profesor,
-            periodos.periodo,
-            salones.salon,
-            turnos.lunes,
-            turnos.martes,
-            turnos.miercoles,
-            turnos.jueves,
-            turnos.viernes,
-            turnos.horas
-        FROM turnos
-        LEFT JOIN grupos ON turnos.id_grupos = grupos.id_grupo
-        LEFT JOIN materias ON turnos.id_materias = materias.id_materia
-        LEFT JOIN profesores ON turnos.id_profesores = profesores.id_profesor
-        LEFT JOIN periodos ON turnos.id_periodos = periodos.id_periodo
-        LEFT JOIN salones ON turnos.id_salones = salones.id_salon
-        WHERE CONCAT(profesores.Nombre_profesor, ' ', profesores.ap_paterno, ' ', profesores.ap_materno) LIKE '%$search%'
-        ORDER BY nombre_profesor";
+            $sql = "SELECT
+                    horarios.id_horario,
+                    grupos.id_carrera,
+                    grupos.id_semestre,
+                    turnos.clave_turno,
+                    grupos.clave_grupo,
+                    materias.nombre AS nombre_materia,
+                    CONCAT(profesores.nombre, ' ', profesores.ap_paterno, ' ', profesores.ap_materno) AS nombre_profesor,
+                    periodos.periodo,
+                    salones.clave_salon,
+                    horarios.dia,
+                    horarios.hora_inicio,
+                    horarios.hora_fin
+                    FROM horarios
+                    LEFT JOIN grupos ON horarios.id_grupo = grupos.id_grupo
+                    LEFT JOIN turnos ON grupos.id_turno = turnos.id_turno
+                    LEFT JOIN materias ON horarios.id_materia = materias.id_materia
+                    LEFT JOIN profesores ON horarios.id_profesor = profesores.id_profesor
+                    LEFT JOIN periodos ON grupos.id_periodo = periodos.id_periodo
+                    LEFT JOIN salones ON grupos.id_salon = salones.id_salon
+                    WHERE CONCAT(profesores.nombre, ' ', profesores.ap_paterno, ' ', profesores.ap_materno) LIKE '%ebner%'
+                    ORDER BY dia ASC";
 
             // Ejecutar la consulta
-            $result = $conn->query($sql);
+            $result = $conexion->query($sql);
 
             if ($result->num_rows > 0) {
                 $current_profesor = "";
@@ -306,28 +299,22 @@ require 'verificar_sesion.php';
                         <th>Profesor</th>
                         <th>Periodo</th>
                         <th>Salón</th>
-                        <th>Lunes</th>
-                        <th>Martes</th>
-                        <th>Miércoles</th>
-                        <th>Jueves</th>
-                        <th>Viernes</th>
-                        <th>Horas</th>
+                        <th>Dia</th>
+                        <th>Hora de inicio</th>
+                        <th>Hora de finalizacion</th>
                         <th>Acción</th>
                     </tr>";
                     }
                     echo "<tr>
-                <td>" . $row["nombre_grupo"] . "</td>
+                <td>" . $row["id_carrera"] . $row["id_semestre"] . $row["clave_turno"] . $row["clave_grupo"] . "</td>
                 <td>" . $row["nombre_materia"] . "</td>
                 <td>" . $row["nombre_profesor"] . "</td>
                 <td>" . $row["periodo"] . "</td>
-                <td>" . $row["salon"] . "</td>
-                <td>" . $row["lunes"] . "</td>
-                <td>" . $row["martes"] . "</td>
-                <td>" . $row["miercoles"] . "</td>
-                <td>" . $row["jueves"] . "</td>
-                <td>" . $row["viernes"] . "</td>
-                <td>" . $row["horas"] . "</td>
-                <td><a href='editar_horario.php?id_turno=" . $row["id_turno"] . "&profesor_nombre=" . urlencode($row["nombre_profesor"]) . "' class='edit-button'>Editar</a></td>
+                <td>" . $row["clave_salon"] . "</td>
+                <td>" . $row["dia"] . "</td>
+                <td>" . $row["hora_inicio"] . "</td>
+                <td>" . $row["hora_fin"] . "</td>
+                <td><a href='editar_horario.php?id_horario=" . $row["id_horario"] . "&profesor_nombre=" . urlencode($row["nombre_profesor"]) . "' class='edit-button'>Editar</a></td>
                 </tr>";
                 }
                 echo "</table></div>"; // Cerrar la tabla y el último contenedor del profesor
@@ -336,7 +323,7 @@ require 'verificar_sesion.php';
             }
         }
 
-        $conn->close();
+        $conexion->close();
         ?>
     </div>
 </body>
