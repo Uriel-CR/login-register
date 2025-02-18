@@ -2,41 +2,51 @@
 require 'verificar_sesion.php';
 include 'conexion_be.php';
 
-// Verificar si se ha enviado un ID de grupo
+// Verificar si se ha enviado un ID de grupo válido
 if (!isset($_GET['id_grupo']) || !is_numeric($_GET['id_grupo'])) {
     die('ID de grupo inválido.');
 }
 
 $id_grupo = intval($_GET['id_grupo']);
 
-// Obtener la información del grupo y las materias
+// Obtener la información del grupo
 $consulta_grupo = "
-    SELECT g.nombre_grupo,
-           g.id_materia1, g.id_materia2, g.id_materia3, g.id_materia4, g.id_materia5, g.id_materia6,
-           m1.nombre AS materia1, m1.clave_materia AS clave_materia1, m1.HRS_TEORICAS AS hrs_teoricas1, m1.HRS_PRACTICAS AS hrs_practicas1, m1.creditos AS creditos1,
-           m2.nombre AS materia2, m2.clave_materia AS clave_materia2, m2.HRS_TEORICAS AS hrs_teoricas2, m2.HRS_PRACTICAS AS hrs_practicas2, m2.creditos AS creditos2,
-           m3.nombre AS materia3, m3.clave_materia AS clave_materia3, m3.HRS_TEORICAS AS hrs_teoricas3, m3.HRS_PRACTICAS AS hrs_practicas3, m3.creditos AS creditos3,
-           m4.nombre AS materia4, m4.clave_materia AS clave_materia4, m4.HRS_TEORICAS AS hrs_teoricas4, m4.HRS_PRACTICAS AS hrs_practicas4, m4.creditos AS creditos4,
-           m5.nombre AS materia5, m5.clave_materia AS clave_materia5, m5.HRS_TEORICAS AS hrs_teoricas5, m5.HRS_PRACTICAS AS hrs_practicas5, m5.creditos AS creditos5,
-           m6.nombre AS materia6, m6.clave_materia AS clave_materia6, m6.HRS_TEORICAS AS hrs_teoricas6, m6.HRS_PRACTICAS AS hrs_practicas6, m6.creditos AS creditos6
+    SELECT g.clave_grupo, 
+           m.id_materia, m.nombre AS materia, m.clave_materia, 
+           m.HRS_TEORICAS, m.HRS_PRACTICAS, m.creditos
     FROM grupos g
-    LEFT JOIN materias m1 ON g.id_materia1 = m1.id_materia
-    LEFT JOIN materias m2 ON g.id_materia2 = m2.id_materia
-    LEFT JOIN materias m3 ON g.id_materia3 = m3.id_materia
-    LEFT JOIN materias m4 ON g.id_materia4 = m4.id_materia
-    LEFT JOIN materias m5 ON g.id_materia5 = m5.id_materia
-    LEFT JOIN materias m6 ON g.id_materia6 = m6.id_materia
-    WHERE g.id_grupo = $id_grupo
+    LEFT JOIN grupo_materia gm ON g.id_grupo = gm.id_grupo
+    LEFT JOIN materias m ON gm.id_materia = m.id_materia
+    WHERE g.id_grupo = ?
 ";
-$resultado_grupo = mysqli_query($conexion, $consulta_grupo);
 
+// Preparar la consulta para evitar SQL Injection
+$stmt = mysqli_prepare($conexion, $consulta_grupo);
+mysqli_stmt_bind_param($stmt, "i", $id_grupo);
+mysqli_stmt_execute($stmt);
+$resultado_grupo = mysqli_stmt_get_result($stmt);
+
+// Verificar si el grupo existe
 if (!$resultado_grupo || mysqli_num_rows($resultado_grupo) == 0) {
     die('Grupo no encontrado.');
 }
 
-$fila_grupo = mysqli_fetch_assoc($resultado_grupo);
+// Obtener los datos
+$materias = [];
+$clave_grupo = '';
+
+while ($fila = mysqli_fetch_assoc($resultado_grupo)) {
+    $clave_grupo = $fila['clave_grupo']; // Se repetirá en cada fila, pero es el mismo para todas
+    if (!empty($fila['id_materia'])) {
+        $materias[] = $fila;
+    }
+}
+
+// Cerrar conexión
+mysqli_stmt_close($stmt);
 mysqli_close($conexion);
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -217,7 +227,6 @@ mysqli_close($conexion);
 <?php
 include 'header.html';
 ?>
-
 <h1>Editar Materias para el Grupo</h1>
 
 <form method="POST" action="editar_materia_be.php">
@@ -226,32 +235,34 @@ include 'header.html';
     <table>
         <tbody>
             <?php
-            for ($i = 1; $i <= 6; $i++) {
-                $materia_id = $fila_grupo["id_materia$i"];
-                $materia_nombre = $fila_grupo["materia$i"];
-                $clave_materia = $fila_grupo["clave_materia$i"];
-                $hrs_teoricas = $fila_grupo["hrs_teoricas$i"];
-                $hrs_practicas = $fila_grupo["hrs_practicas$i"];
-                $creditos = $fila_grupo["creditos$i"]; // Obtener los créditos actuales
+            if (!empty($materias)) {
+                foreach ($materias as $index => $materia) {
+                    $materia_id = $materia["id_materia"];
+                    $materia_nombre = $materia["materia"];
+                    $clave_materia = $materia["clave_materia"];
+                    $hrs_teoricas = $materia["HRS_TEORICAS"];
+                    $hrs_practicas = $materia["HRS_PRACTICAS"];
+                    $creditos = $materia["creditos"];
 
-                // Calcular los créditos como la suma de horas teóricas y prácticas
-                $creditos_calculados = $hrs_teoricas + $hrs_practicas;
-                
-                echo "<tr>
-                        <th>Materia $i</th>
-                        <td>
-                            <label>Nombre:</label>
-                            <input type='text' name='materia$i' value='" . htmlspecialchars($materia_nombre) . "' " . ($materia_id ? "" : "disabled") . ">
-                            <label>Clave:</label>
-                            <input type='text' name='clave_materia$i' value='" . htmlspecialchars($clave_materia) . "' placeholder='Clave'>
-                            <label>Horas Teóricas:</label>
-                            <input type='number' name='hrs_teoricas$i' value='" . htmlspecialchars($hrs_teoricas) . "' placeholder='Horas Teóricas'>
-                            <label>Horas Prácticas:</label>
-                            <input type='number' name='hrs_practicas$i' value='" . htmlspecialchars($hrs_practicas) . "' placeholder='Horas Prácticas'>
-                            <label>Créditos:</label>
-                            <input type='number' name='creditos$i' value='" . htmlspecialchars($creditos_calculados) . "' placeholder='Créditos'>
-                        </td>
-                      </tr>";
+                    echo "<tr>
+                            <th>Materia " . ($index + 1) . "</th>
+                            <td>
+                                <input type='hidden' name='id_materia[]' value='" . htmlspecialchars($materia_id) . "'>
+                                <label>Nombre:</label>
+                                <input type='text' name='materia[]' value='" . htmlspecialchars($materia_nombre) . "' disabled>
+                                <label>Clave:</label>
+                                <input type='text' name='clave_materia[]' value='" . htmlspecialchars($clave_materia) . "' placeholder='Clave'>
+                                <label>Horas Teóricas:</label>
+                                <input type='number' name='hrs_teoricas[]' value='" . htmlspecialchars($hrs_teoricas) . "' placeholder='Horas Teóricas'>
+                                <label>Horas Prácticas:</label>
+                                <input type='number' name='hrs_practicas[]' value='" . htmlspecialchars($hrs_practicas) . "' placeholder='Horas Prácticas'>
+                                <label>Créditos:</label>
+                                <input type='number' name='creditos[]' value='" . htmlspecialchars($creditos) . "' placeholder='Créditos'>
+                            </td>
+                          </tr>";
+                }
+            } else {
+                echo "<tr><td colspan='2'>No hay materias asignadas a este grupo.</td></tr>";
             }
             ?>
             <tr>

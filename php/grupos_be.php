@@ -1,4 +1,5 @@
 <?php
+include 'conexion_be.php';
 // Verificar si el formulario ha sido enviado
 if (isset($_POST['register'])) {
     // Obtener los valores del formulario
@@ -25,9 +26,28 @@ if (isset($_POST['register'])) {
     $d4 = substr($nombre_grupo, 3, 1);
 
     // Consultas para obtener ids de carrera, semestre, turno
+    $consulta_carrera = "SELECT id_carrera FROM carreras WHERE clave_carrera = $d1";
+    $resultado_carrera = mysqli_query($conexion, $consulta_carrera);
+    $fila_carrera = mysqli_fetch_assoc($resultado_carrera);
+    $id_carrera = $fila_carrera['id_carrera'] ?? null;
+
+    $consulta_semestre = "SELECT id_semestre FROM semestres WHERE clave_semestre = $d2";
+    $resultado_semestre = mysqli_query($conexion, $consulta_semestre);
+    $fila_semestre = mysqli_fetch_assoc($resultado_semestre);
+    $id_semestre = $fila_semestre['id_semestre'] ?? null;
+
+    $consulta_turno = "SELECT id_turno FROM turnos WHERE clave_turno = $d3";
+    $resultado_turno = mysqli_query($conexion, $consulta_turno);
+    $fila_turno = mysqli_fetch_assoc($resultado_turno);
+    $id_turno = $fila_turno['id_turno'] ?? null;
+
+    // Verificar que se obtuvieron los valores
+    if (!$id_carrera || !$id_semestre || !$id_turno) {
+        die("Error: No se encontraron valores para carrera, semestre o turno.");
+    }
 
     // Insertar el grupo
-    $insertar_grupo = "INSERT INTO grupos (id_carrera, id_semestre, id_turno, clave_grupo, id_profesor, id_periodos, id_salones) 
+    $insertar_grupo = "INSERT INTO grupos (id_carrera, id_semestre, id_turno, clave_grupo, id_profesor, id_periodo, id_salon) 
                         VALUES (?, ?, ?, ?, ?, ?, ?)";
     $stmt = mysqli_prepare($conexion, $insertar_grupo);
     mysqli_stmt_bind_param($stmt, "iiiiiii", $id_carrera, $id_semestre, $id_turno, $d4, $profesor_id, $periodo_id, $salon_id);

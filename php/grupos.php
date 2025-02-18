@@ -140,7 +140,7 @@ require 'verificar_sesion.php';
             background-color: #f1f1f1;
         }
 
-        input[type="number"],
+        input[type="string"],
         input[type="text"],
         select {
             width: calc(100% - 22px);
@@ -194,7 +194,7 @@ require 'verificar_sesion.php';
             <tbody>
                 <tr>
                     <th>Grupo</th>
-                    <td><input type="number" name="nombre_grupo" oninput="convertirMayusculas(this)" required></td>
+                    <td><input type="string" name="nombre_grupo" oninput="convertirMayusculas(this)" required></td>
                 </tr>
                 <tr>
                     <th>Materias</th>
@@ -301,6 +301,21 @@ require 'verificar_sesion.php';
     </form>
 
 
+    <?php
+    include 'conexion_be.php';
+
+    // Consulta SQL para obtener los grupos y sus materias asignadas
+    $consulta_grupos = "
+    SELECT g.id_grupo, g.clave_grupo, 
+           GROUP_CONCAT(m.nombre ORDER BY m.nombre SEPARATOR ', ') AS materias
+    FROM grupos g
+    LEFT JOIN grupo_materia gm ON g.id_grupo = gm.id_grupo
+    LEFT JOIN materias m ON gm.id_materia = m.id_materia
+    GROUP BY g.id_grupo, g.clave_grupo
+";
+    $resultado_grupos = mysqli_query($conexion, $consulta_grupos);
+    ?>
+
     <h1>Grupos Registrados</h1>
     <table>
         <thead>
@@ -312,40 +327,16 @@ require 'verificar_sesion.php';
         </thead>
         <tbody>
             <?php
-            include 'conexion_be.php';
-
-            // Consulta SQL para obtener los grupos y las materias asignadas
-            $consulta_grupos = "
-            SELECT g.id_grupo, g.nombre_grupo,
-            g.id_materia1, g.id_materia2, g.id_materia3, g.id_materia4, g.id_materia5, g.id_materia6,
-            m1.nombre AS materia1, m2.nombre AS materia2, m3.nombre AS materia3, m4.nombre AS materia4, m5.nombre AS materia5, m6.nombre AS materia6
-            FROM grupos g
-            LEFT JOIN materias m1 ON g.id_materia1 = m1.id_materia
-            LEFT JOIN materias m2 ON g.id_materia2 = m2.id_materia
-            LEFT JOIN materias m3 ON g.id_materia3 = m3.id_materia
-            LEFT JOIN materias m4 ON g.id_materia4 = m4.id_materia
-            LEFT JOIN materias m5 ON g.id_materia5 = m5.id_materia
-            LEFT JOIN materias m6 ON g.id_materia6 = m6.id_materia
-        ";
-            $resultado_grupos = mysqli_query($conexion, $consulta_grupos);
-
             if ($resultado_grupos && mysqli_num_rows($resultado_grupos) > 0) {
                 while ($fila_grupo = mysqli_fetch_assoc($resultado_grupos)) {
-                    $materias = '';
-                    for ($i = 1; $i <= 6; $i++) {
-                        $materia_key = "materia$i";
-                        if (!empty($fila_grupo[$materia_key])) {
-                            $id_materia = $fila_grupo["id_materia$i"];
-                            $nombre_materia = $fila_grupo[$materia_key];
-                            $materias .= "<li><a href='editar_materia.php?id_grupo={$fila_grupo['id_grupo']}&materia_id={$id_materia}'>{$nombre_materia}</a></li>";
-                        }
-                    }
                     $id_grupo = $fila_grupo['id_grupo'];
+                    $materias = !empty($fila_grupo['materias']) ? $fila_grupo['materias'] : 'Sin materias asignadas';
+
                     echo "<tr>
-                        <td>{$fila_grupo['nombre_grupo']}</td>
-                        <td><ul class='materias-lista'>{$materias}</ul></td>
-                        <td><a href='editar_grupo.php?id_grupo=$id_grupo' class='boton'>Editar Materias</a></td>
-                      </tr>";
+                    <td>{$fila_grupo['clave_grupo']}</td>
+                    <td>{$materias}</td>
+                    <td><a href='editar_grupo.php?id_grupo=$id_grupo' class='boton'>Editar Materias</a></td>
+                  </tr>";
                 }
             } else {
                 echo '<tr><td colspan="3">No hay grupos registrados</td></tr>';
@@ -355,6 +346,7 @@ require 'verificar_sesion.php';
             ?>
         </tbody>
     </table>
+
 </body>
 
 </html>
