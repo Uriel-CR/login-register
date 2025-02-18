@@ -2,40 +2,6 @@
 require 'verificar_sesion.php';
 require 'conexion_be.php';
 
-// Verificar si se envió el formulario de registro de usuario para profesor
-/*if (isset($_POST['submit_usuario'])) {
-    $clave = $_POST['clave_usuario'];
-    $nombre_completo = $_POST['nombre_completo'];
-    $correo = $_POST['correo'];
-    $usuario = $_POST['usuario'];
-    $contrasena = $_POST['contrasena'];
-
-    // Preparar la consulta de inserción
-    $sql = "INSERT INTO profesores_usu (clave, nombre_completo, correo, usuario, contrasena) 
-            VALUES (?, ?, ?, ?, ?)";
-    
-    // Preparar la declaración
-    $stmt = $conexion->prepare($sql);
-    
-    // Verificar si la preparación fue exitosa
-    if ($stmt === false) {
-        die("Error en la preparación de la consulta: " . $conexion->error);
-    }
-
-    // Vincular parámetros y ejecutar la declaración
-    $stmt->bind_param("sssss", $clave, $nombre_completo, $correo, $usuario, $contrasena);
-    
-    // Ejecutar la declaración
-    if ($stmt->execute()) {
-        echo "Registro guardado exitosamente.";
-    } else {
-        echo "Error al guardar el registro: " . $stmt->error;
-    }
-
-    // Cerrar la declaración
-    $stmt->close();
-}*/
-
 // Verificar si se envió el formulario de registro de profesor
 if (isset($_POST['submit_profesor'])) {
     $carrera = $_POST['carrera'];
